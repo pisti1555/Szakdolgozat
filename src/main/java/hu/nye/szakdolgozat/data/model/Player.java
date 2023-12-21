@@ -1,5 +1,6 @@
 package hu.nye.szakdolgozat.data.model;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Player {
