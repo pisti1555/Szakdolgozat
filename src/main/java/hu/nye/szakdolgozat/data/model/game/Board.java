@@ -1,9 +1,12 @@
 package hu.nye.szakdolgozat.data.model.game;
 
+import java.util.Random;
+
 public class Board {
     private Field[] field;
     Piece fly;
     Piece[] spider;
+    Random random = new Random();
 
     /**
      * Generating game board, making connections inside it and placing pieces onto it.
@@ -15,6 +18,7 @@ public class Board {
             Piece temp = new Piece(Pieces.EMPTY, i);
             field[i] = new Field(Pieces.EMPTY);
             field[i].connection = new Field[6];
+            field[i].number = i;
         }
 
         spider = new Piece[5];
@@ -224,6 +228,26 @@ public class Board {
         display();
     }
 
+    public boolean makeRandomMoveSpider() {
+        Piece randomSpider = spider[random.nextInt(spider.length)];
+
+        int unavailableFields = 0;
+        for (int i = 0; i < field[randomSpider.location].connection.length; i++) {
+            if(field[randomSpider.location].connection[i] == null) unavailableFields++;
+        }
+        int availableFields = 6 - unavailableFields;
+        int randomConnection = random.nextInt(availableFields);
+        int randomField = field[randomSpider.location].connection[randomConnection].number;
+
+        if(isMoveValid(randomSpider.location, randomField)) {
+            makeMoveSpider(randomSpider.location, randomField, randomSpider);
+            return true;
+        } else {
+            makeRandomMoveSpider();
+        }
+        return false;
+    }
+
     public boolean isMoveValid(int from, int to) {
         boolean areFieldsConnected = false;
         boolean isFromFieldEmpty = field[from].piece == Pieces.EMPTY;
@@ -255,7 +279,7 @@ public class Board {
             if(field[fly.location].connection[i] == null) unavailableFields++;
         }
 
-        int availableFields = 6-unavailableFields;
+        int availableFields = 6 - unavailableFields;
         for (int i = 0; i < field[fly.location].connection.length; i++) {
             if (field[fly.location].connection[i].piece != Pieces.EMPTY) availableFields--;
         }
@@ -288,9 +312,9 @@ public class Board {
         }
 
         System.out.println("\nBoard's locations: ");
-        System.out.println("Fly location: " + flyLoc);
+        System.out.println("Fly found on field number " + flyLoc);
         for (int i = 0; i < spiderLoc.length; i++) {
-            System.out.println("Spider[" + i + "] location: " + spiderLoc[i]);
+            System.out.println("Spider found on field number " + spiderLoc[i]);
         }
         System.out.println("\n\n");
     }

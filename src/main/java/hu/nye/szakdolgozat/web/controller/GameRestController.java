@@ -14,12 +14,16 @@ public class GameRestController {
 
     @PostMapping("/makeMove")
     public ResponseEntity<String> makeMove(@RequestParam int from, @RequestParam int to) {
-        // Validate the move and update the game board
         if (gameBoard.isMoveValid(from, to)) {
             gameBoard.makeMove(from, to);
             return ResponseEntity.ok("Move successful");
         } else {
             return ResponseEntity.badRequest().body("Invalid move");
         }
+    }
+
+    @PostMapping("/makeRandomMoveSpider")
+    public void makeRandomMoveSpider() {
+        gameBoard.makeRandomMoveSpider();
     }
 }
