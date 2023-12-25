@@ -26,4 +26,9 @@ public class GameRestController {
     public void makeRandomMoveSpider() {
         gameBoard.makeRandomMoveSpider();
     }
+
+    @PostMapping("/playGame")
+    public void playGame() {
+        
+    }
 }
