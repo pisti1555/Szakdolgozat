@@ -1,33 +1,31 @@
 package hu.nye.szakdolgozat.web.controller;
 
 import hu.nye.szakdolgozat.data.model.Player;
+import hu.nye.szakdolgozat.data.model.game.Board;
 import hu.nye.szakdolgozat.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/szakdolgozat")
-public class PlayerController {
+public class GameController {
     private final PlayerService playerService;
+    private final Board board = new Board();
 
     @Autowired
-    public PlayerController(PlayerService playerService) {
+    public GameController(PlayerService playerService) {
         this.playerService = playerService;
     }
 
-    @GetMapping("/create")
-    public String createPlayer() {
-        return "szakdolgozat/create";
+    @GetMapping("/game")
+    public String game() {
+        return "game";
     }
 
-    @PostMapping("/create")
-    public String createPlayer(Model model, Player player) {
-        Player newPlayer = playerService.createPlayer(player);
-        model.addAttribute("player", newPlayer);
-        return "szakdolgozat/edit";
-    }
 }

@@ -64,7 +64,15 @@ public class Board {
         return !isFromFieldEmpty && isToFieldEmpty && areFieldsConnected;
     }
 
+    public int[] getPositions() {
+        int[] loc = new int[spider.length + 1];
+        loc[0] = fly.location;
+        for (int i = 1; i < spider.length + 1; i++) {
+            loc[i] = spider[i-1].location;
+        }
 
+        return loc;
+    }
 
 
     //---------------- Child methods of Main methods listed above ----------------
@@ -124,7 +132,7 @@ public class Board {
         }
 
         int availableFields = 6 - unavailableFields;
-        for (int i = 0; i < field[fly.location].connection.length; i++) {
+        for (int i = 0; i < availableFields; i++) {
             if (field[fly.location].connection[i].piece != Pieces.EMPTY) availableFields--;
         }
 
