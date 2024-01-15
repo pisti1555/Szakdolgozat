@@ -61,14 +61,26 @@ function getBoardDataFromServer() {
      }).then(response => response.json())
          .then(data => {
              console.log(data);
-
              locations = data;
-
-             placePieces();
-
+             placePieces(locations);
           }).catch(error => console.error("Error: ", error));
 }
 
-function placePieces() {
-    //TODO
+function placePieces(pieceLocations) {
+    var flyHTML = '<img src="/img/flyPng.png" alt="fly" class="piece"/>';
+    var spiderHTML = '<img src="/img/spiderPng.png" alt="spider" class="piece"/>';
+
+    for (var i = 0; i <= 27; i++) {
+        document.getElementById("field" + i).innerHTML = "";
+      }
+
+    var fieldIDs = [];
+    for (var i = 0; i < pieceLocations.length; i++) {
+        fieldIDs.push("field" + pieceLocations[i]);
+      }
+
+      document.getElementById(fieldIDs[0]).innerHTML = flyHTML;
+    for (var i = 1; i < fieldIDs.length; i++) {
+        document.getElementById(fieldIDs[i]).innerHTML = spiderHTML;
+    }
 }

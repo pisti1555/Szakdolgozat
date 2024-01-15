@@ -9,8 +9,9 @@
     <title>Spiderweb - Game</title>
 
     <link rel="stylesheet" th:href="@{/css/game.css}">
+    <script th:src="@{/js/game.js}"></script>
 </head>
-<body>
+<body onload="getBoardDataFromServer()">
     <div class="centered-div">
         <div class="field" id="field0" onclick="handleOnClick(0)"></div>
         <div class="subfield" id="field1" onclick="handleOnClick(1)"></div>
@@ -39,9 +40,6 @@
         <div class="subfield" id="field24" onclick="handleOnClick(24)"></div>
         <div class="subfield" id="field25" onclick="handleOnClick(25)"></div>
         <div class="subfield" id="field26" onclick="handleOnClick(26)"></div>
-        <div class="field" id="field27" onclick="handleOnClick(27)"></div>
-    </div>
-
-    <script th:src="@{/js/game.js}"></script>
+        <div class="field" id="field27" onclick="handleOnClick(27)">  
 </body>
 </html>
