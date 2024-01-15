@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/v1/game")
@@ -38,5 +40,10 @@ public class GameRestController {
     @PostMapping("/getPositions")
     public int[] sendPositionsToClient() {
         return gameBoard.getPositions();
+    }
+
+    @GetMapping("/getConnections")
+    public HashMap<Integer, ArrayList<Integer>> getConnections() {
+        return gameBoard.getConnections();
     }
 }

@@ -4,6 +4,12 @@ var lastSelectedFieldIndex;
 var fieldSelected = false;
 
 var locations;
+var connectionMap;
+
+function loadPage() {
+    getBoardDataFromServer();
+    fetchConnections();
+}
 
 function handleOnClick(idIndex) {
     var selectedField = "field" + idIndex;
@@ -82,5 +88,25 @@ function placePieces(pieceLocations) {
       document.getElementById(fieldIDs[0]).innerHTML = flyHTML;
     for (var i = 1; i < fieldIDs.length; i++) {
         document.getElementById(fieldIDs[i]).innerHTML = spiderHTML;
+    }
+}
+
+
+function fetchConnections() {
+    fetch('http://localhost:8080/api/v1/game/getConnections')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Connections data:', data);
+
+            // Process the data as needed
+            connectionMap = data;
+            processConnections();
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function processConnections() {
+    for (const [key, value] of Object.entries(connectionMap)) {
+        console.log(`Kulcs: ${key}, Érték: ${value}`);
     }
 }

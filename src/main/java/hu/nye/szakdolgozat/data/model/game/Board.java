@@ -1,5 +1,8 @@
 package hu.nye.szakdolgozat.data.model.game;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class Board {
@@ -72,6 +75,31 @@ public class Board {
         }
 
         return loc;
+    }
+
+    public HashMap<Integer, ArrayList<Integer>> getConnections() {
+        HashMap<Integer, ArrayList<Integer>> connections = new HashMap<>();
+        for (int i = 0; i < field.length; i++) {
+            int numberOfConnections = 6;
+            for (int j = 0; j < 6; j++) {
+                if (field[i].connection[j] == null) numberOfConnections--;
+            }
+
+            ArrayList<Integer> connectionOfField = new ArrayList<>();
+
+            for (int j = 0; j < numberOfConnections; j++) {
+                connectionOfField.add(field[i].connection[j].number);
+                connections.put(i, connectionOfField);
+            }
+        }
+
+        for (Map.Entry<Integer, ArrayList<Integer>> entry : connections.entrySet()) {
+            Integer key = entry.getKey();
+            ArrayList<Integer> values = entry.getValue();
+            System.out.println("Key: " + key + ", Values: " + values);
+        }
+
+        return connections;
     }
 
 
@@ -171,7 +199,5 @@ public class Board {
         }
         System.out.println("\n\n");
     }
-
-
 
 }

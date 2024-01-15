@@ -9,10 +9,12 @@
     <title>Spiderweb - Game</title>
 
     <link rel="stylesheet" th:href="@{/css/game.css}">
-    <script th:src="@{/js/game.js}"></script>
+    <script th:src="@{/js/game.js}" defer></script>
 </head>
-<body onload="getBoardDataFromServer()">
+<body onload="loadPage()">
     <div class="centered-div">
+        <canvas id="canvas" width="600" height="600"></canvas>
+
         <div class="field" id="field0" onclick="handleOnClick(0)"></div>
         <div class="subfield" id="field1" onclick="handleOnClick(1)"></div>
         <div class="subfield" id="field2" onclick="handleOnClick(2)"></div>
