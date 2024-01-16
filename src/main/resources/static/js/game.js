@@ -98,7 +98,6 @@ function fetchConnections() {
         .then(data => {
             console.log('Connections data:', data);
 
-            // Process the data as needed
             connectionMap = data;
             processConnections();
         })
@@ -108,5 +107,28 @@ function fetchConnections() {
 function processConnections() {
     for (const [key, value] of Object.entries(connectionMap)) {
         console.log(`Kulcs: ${key}, Érték: ${value}`);
+
+        for (var i in value) {
+            drawConnections(key, value[i]);
+        }
     }
+}
+
+function drawConnections(from ,to) {
+    var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+
+        var field1 = document.getElementById("field" + from);
+        var field2 = document.getElementById("field" + to);
+
+        var x1 = field1.offsetLeft;
+        var y1 = field1.offsetTop;
+
+        var x2 = field2.offsetLeft;
+        var y2 = field2.offsetTop;
+
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
 }
