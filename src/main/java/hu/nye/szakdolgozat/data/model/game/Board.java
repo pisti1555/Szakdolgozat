@@ -10,6 +10,8 @@ public class Board {
     private Piece fly;
     private Piece[] spider;
     private Random random = new Random();
+    private boolean flysTurn = true;
+    private boolean isGameRunning = true;
 
 
     public Board() {
@@ -23,14 +25,11 @@ public class Board {
 
     //---------------- Main methods to use in Controller ----------------
 
-
     public void makeMove(int from, int to) {
         if (whichPiece(from) == fly) makeMoveFly(from, to);
         for (Piece i : spider) {
             if (whichPiece(from) == i) makeMoveSpider(from, to, i);
         }
-
-        hasWinner();
     }
 
     public boolean makeRandomMoveSpider() {
@@ -53,7 +52,37 @@ public class Board {
         return false;
     }
 
+    public boolean makeRandomMoveFly() {
+        Piece randomSpider = spider[random.nextInt(spider.length)];
+
+        int availableFields = field[fly.location].connection.length;
+        for (int i = 0; i < availableFields; i++) {
+            if(field[fly.location].connection[i] == null) availableFields--;
+        }
+        int randomConnection = random.nextInt(availableFields);
+        int randomField = field[fly.location].connection[randomConnection].number;
+
+        if(isMoveValid(fly.location, randomField)) {
+            makeMoveFly(fly.location, randomField);
+            return true;
+        } else {
+            makeRandomMoveFly();
+        }
+        return false;
+    }
+
     public boolean isMoveValid(int from, int to) {
+        boolean correctPiece = false;
+        if(flysTurn) {
+            if (from == fly.location) {
+                correctPiece = true;
+            } else return false;
+        } else {
+            for (int i = 0; i < spider.length; i++) {
+                if (from == spider[i].location) correctPiece = true;
+            }
+        }
+
         boolean areFieldsConnected = false;
         boolean isFromFieldEmpty = field[from].piece == Pieces.EMPTY;
         boolean isToFieldEmpty = field[to].piece == Pieces.EMPTY;
@@ -64,7 +93,7 @@ public class Board {
             }
         }
 
-        return !isFromFieldEmpty && isToFieldEmpty && areFieldsConnected;
+        return !isFromFieldEmpty && isToFieldEmpty && correctPiece && areFieldsConnected && isGameRunning();
     }
 
     public int[] getPositions() {
@@ -112,6 +141,7 @@ public class Board {
             field[from].piece = Pieces.EMPTY;
 
             fly.location = to;
+            flysTurn = ! flysTurn;
         } else {
             System.out.println("Invalid");
         }
@@ -124,6 +154,7 @@ public class Board {
             field[from].piece = Pieces.EMPTY;
 
             p.location = to;
+            flysTurn = ! flysTurn;
         } else {
             System.out.println("Invalid");
         }
@@ -142,7 +173,7 @@ public class Board {
         return toReturn;
     }
 
-    private void hasWinner() {
+    private boolean isGameRunning() {
         if (
                 fly.location == 0 ||
                         fly.location == 5 ||
@@ -151,23 +182,28 @@ public class Board {
                         fly.location == 18 ||
                         fly.location == 22
         ) {
+            isGameRunning = false;
             System.out.println("Fly won!");
         }
 
         int unavailableFields = 0;
         for (int i = 0; i < field[fly.location].connection.length; i++) {
-            if(field[fly.location].connection[i] == null) unavailableFields++;
+            if(
+                    field[fly.location].connection[i] == null ||
+                    field[fly.location].connection[i].piece != Pieces.EMPTY
+            ) unavailableFields++;
         }
 
-        int availableFields = 6 - unavailableFields;
-        for (int i = 0; i < availableFields; i++) {
-            if (field[fly.location].connection[i].piece != Pieces.EMPTY) availableFields--;
+        if (unavailableFields >= field[fly.location].connection.length) {
+            isGameRunning = false;
+            System.out.println("Spiders won!");
         }
-
-        if (availableFields <= 0) System.out.println("Spiders won!");
+        return isGameRunning;
     }
 
-
+    public boolean isFlysTurn() {
+        return flysTurn;
+    }
 
     private void display() {
         int flyLoc = -1;
@@ -197,7 +233,7 @@ public class Board {
         for (int i = 0; i < spiderLoc.length; i++) {
             System.out.println("Spider found on field number " + spiderLoc[i]);
         }
-        System.out.println("\n\n");
+        System.out.println("\n flysTurn: " + flysTurn + "\n");
     }
 
 }
