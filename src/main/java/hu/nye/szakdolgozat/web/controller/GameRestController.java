@@ -1,21 +1,13 @@
 package hu.nye.szakdolgozat.web.controller;
 
 import hu.nye.szakdolgozat.data.model.game.Board;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("/api/v1/game")
+@RequestMapping("/api/game")
 public class GameRestController {
     private final Board gameBoard = new Board();
 

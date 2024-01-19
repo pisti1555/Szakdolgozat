@@ -19,7 +19,7 @@ import java.util.UUID;
  * Javadoc komment.
  */
 @RestController
-@RequestMapping("/api/v1/player")
+@RequestMapping("/api/player")
 public class PlayerRestController {
     private final PlayerService playerService;
 

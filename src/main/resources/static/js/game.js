@@ -36,14 +36,14 @@ function selectField(selectedField, selectedFieldIndex) {
 }
 
 function moveToField(from, to) {
-    document.getElementById(lastSelectedField).style.background = 'white';
+    document.getElementById(lastSelectedField).style.background = 'blue';
 
     var moveData = {
        from: parseInt(from),
        to: parseInt(to)
     };
 
-    fetch("http://localhost:8080/api/v1/game/makeMove", {
+    fetch("http://localhost:8080/api/game/makeMove", {
        method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -58,7 +58,7 @@ function moveToField(from, to) {
 
 
 function getBoardDataFromServer() {
-    fetch("http://localhost:8080/api/v1/game/getPositions", {
+    fetch("http://localhost:8080/api/game/getPositions", {
        method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -93,7 +93,7 @@ function placePieces(pieceLocations) {
 
 
 function fetchConnections() {
-    fetch('http://localhost:8080/api/v1/game/getConnections')
+    fetch('http://localhost:8080/api/game/getConnections')
         .then(response => response.json())
         .then(data => {
             console.log('Connections data:', data);

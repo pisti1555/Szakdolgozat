@@ -8,17 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/szakdolgozat")
+@RequestMapping("/game")
 public class GameController {
-    private final PlayerService playerService;
     private final Board board = new Board();
 
-    @Autowired
-    public GameController(PlayerService playerService) {
-        this.playerService = playerService;
-    }
-
-    @GetMapping("/game")
+    @GetMapping()
     public String game() {
         return "game";
     }

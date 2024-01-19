@@ -1,9 +1,14 @@
+body {
+    background-color: #070053;
+    height: fit-content;
+}
+
 .centered-div {
+    background-color: #070053;
     position: relative;
     margin: auto;
     width: 600px;
     height: 600px;
-    border: 2px solid #ccc;
 }
 
 #canvas {
@@ -11,7 +16,7 @@
 }
 
 .field {
-    background-color: white;
+    background-color: blue;
     width: 10%;
     height: 10%;
     border: 2px solid black;
@@ -21,7 +26,7 @@
 }
 
 .subfield {
-    background-color: white;
+    background-color: blue;
     width: 4%;
     height: 4%;
     border: 2px solid black;
