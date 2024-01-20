@@ -32,11 +32,11 @@ function selectField(selectedField, selectedFieldIndex) {
     lastSelectedFieldIndex = parseInt(selectedFieldIndex);
     lastSelectedField = selectedField;
 
-    document.getElementById(selectedField).style.background = 'grey';
+    document.getElementById(selectedField).style.background = 'rgb(0, 0, 65)';
 }
 
 function moveToField(from, to) {
-    document.getElementById(lastSelectedField).style.background = 'blue';
+    document.getElementById(lastSelectedField).style.background = 'rgb(0, 4, 120)';
 
     var moveData = {
        from: parseInt(from),
@@ -73,8 +73,8 @@ function getBoardDataFromServer() {
 }
 
 function placePieces(pieceLocations) {
-    var flyHTML = '<img src="/img/flyPng.png" alt="fly" class="piece"/>';
-    var spiderHTML = '<img src="/img/spiderPng.png" alt="spider" class="piece"/>';
+    var flyHTML = '<img src="/img/fly.png" alt="fly" class="piece"/>';
+    var spiderHTML = '<img src="/img/spider.png" alt="spider" class="piece"/>';
 
     for (var i = 0; i <= 27; i++) {
         document.getElementById("field" + i).innerHTML = "";

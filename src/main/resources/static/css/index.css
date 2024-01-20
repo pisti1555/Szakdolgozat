@@ -34,7 +34,7 @@ body {
 .container .row .button {
     font-family: Franklin Gothic;
     backdrop-filter: blur(10px);
-    background-color: #001278;
+    background: transparent;
     width: 100%;
     padding: 5%;
     text-align: center;

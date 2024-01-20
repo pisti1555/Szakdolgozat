@@ -10,10 +10,29 @@
 
     <link rel="stylesheet" th:href="@{/css/game.css}">
     <script th:src="@{/js/game.js}" defer></script>
+
+    <style th:inline="text">
+        body {
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: url([[@{/img/GamePageBackground.jpg}]]) no-repeat center center fixed;
+            filter: brightness(80%);
+            z-index: -1;
+        }
+    </style>
 </head>
+
 <body onload="loadPage()">
     <div class="centered-div">
-        <canvas id="canvas" width="600" height="600"></canvas>
+        <canvas id="canvas" width="700" height="700"></canvas>
 
         <div class="field" id="field0" onclick="handleOnClick(0)"></div>
         <div class="subfield" id="field1" onclick="handleOnClick(1)"></div>
@@ -42,6 +61,7 @@
         <div class="subfield" id="field24" onclick="handleOnClick(24)"></div>
         <div class="subfield" id="field25" onclick="handleOnClick(25)"></div>
         <div class="subfield" id="field26" onclick="handleOnClick(26)"></div>
-        <div class="field" id="field27" onclick="handleOnClick(27)">  
+        <div class="field" id="field27" onclick="handleOnClick(27)"></div>
+    </div>
 </body>
 </html>

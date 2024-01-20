@@ -9,20 +9,26 @@
     <title>Spiderweb - Home</title>
 
     <link rel="stylesheet" th:href="@{/css/index.css}"/>
+
+    <style th:inline="text">
+        body{
+            background: url([[@{/img/HomePageBackground.jpg}]])
+                        no-repeat center center fixed;
+        }
+    </style>
 </head>
+
 <body>
+    <div class="container">
 
-<div class="container">
+        <h1 id="title">Spiderweb game</h1>
 
-    <h1 id="title">Spiderweb game</h1>
-
-    <div class="row">
-        <a th:href="@{'/game'}" type="button" class="button">Play</a>
+        <div class="row">
+            <a th:href="@{'/game'}" type="button" class="button">Play</a>
+        </div>
+        <div class="row">
+            <a th:href="@{'/players'}" type="button" class="button">Scoreboard</a>
+        </div>
     </div>
-    <div class="row">
-        <a th:href="@{'/players'}" type="button" class="button">Scoreboard</a>
-    </div>
-</div>
-
 </body>
 </html>
