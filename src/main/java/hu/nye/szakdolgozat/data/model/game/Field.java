@@ -1,11 +1,35 @@
 package hu.nye.szakdolgozat.data.model.game;
 
 public class Field {
-    Field[] connection;
-    Pieces piece;
-    int number;
+    private Field[] connection;
+    private Pieces piece;
+    private int number;
 
     public Field(Pieces piece) {
         this.piece = piece;
+    }
+
+    public Field[] getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Field[] connection) {
+        this.connection = connection;
+    }
+
+    public Pieces getPiece() {
+        return piece;
+    }
+
+    public void setPiece(Pieces piece) {
+        this.piece = piece;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }

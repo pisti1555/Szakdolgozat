@@ -2,7 +2,7 @@ package hu.nye.szakdolgozat.data.repository;
 
 import java.util.List;
 
-public interface Repository<T, I>{
+public interface PlayerRepository<T, I>{
     T save(T item);
 
     T getById(I id);

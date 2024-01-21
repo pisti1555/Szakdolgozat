@@ -43,7 +43,7 @@ function moveToField(from, to) {
        to: parseInt(to)
     };
 
-    fetch("http://localhost:8080/api/game/makeMove", {
+    fetch("http://localhost:8080/api/game/playWithFly", {
        method: "POST",
           headers: {
             "Content-Type": "application/json"

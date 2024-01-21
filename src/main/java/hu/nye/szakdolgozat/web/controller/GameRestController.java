@@ -1,6 +1,7 @@
 package hu.nye.szakdolgozat.web.controller;
 
-import hu.nye.szakdolgozat.data.model.game.Board;
+import hu.nye.szakdolgozat.service.GameService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -9,16 +10,21 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/api/game")
 public class GameRestController {
-    private final Board gameBoard = new Board();
+    private final GameService service;
+
+    @Autowired
+    public GameRestController(GameService service) {
+        this.service = service;
+    }
 
     @PostMapping("/playWithFly")
     public String playWithFly(@RequestBody Move move) {
         int from = move.getFrom();
         int to = move.getTo();
 
-        if (gameBoard.isMoveValid(from, to)) {
-            gameBoard.makeMove(from, to);
-            gameBoard.makeRandomMoveSpider();
+        if (service.isMoveValid(from, to)) {
+            service.move(from, to);
+            service.randomMoveSpider();
             return "Moved from " + from + " to " + to;
         } else {
             return "Invalid move";
@@ -30,9 +36,9 @@ public class GameRestController {
         int from = move.getFrom();
         int to = move.getTo();
 
-        if (gameBoard.isMoveValid(from, to)) {
-            gameBoard.makeMove(from, to);
-            gameBoard.makeRandomMoveFly();
+        if (service.isMoveValid(from, to)) {
+            service.move(from, to);
+            service.randomMoveFly();
             return "Moved from " + from + " to " + to;
         } else {
             return "Invalid move";
@@ -44,8 +50,8 @@ public class GameRestController {
         int from = move.getFrom();
         int to = move.getTo();
 
-        if (gameBoard.isMoveValid(from, to)) {
-            gameBoard.makeMove(from, to);
+        if (service.isMoveValid(from, to)) {
+            service.move(from, to);
             return "Moved from " + from + " to " + to;
         } else {
             return "Invalid move";
@@ -54,21 +60,21 @@ public class GameRestController {
 
     @PostMapping("/makeRandomMoveSpider")
     public void makeRandomMoveSpider() {
-        gameBoard.makeRandomMoveSpider();
+        service.randomMoveSpider();
     }
 
     @PostMapping("/getPositions")
     public int[] sendPositionsToClient() {
-        return gameBoard.getPositions();
+        return service.getPositions();
     }
 
     @GetMapping("/getConnections")
     public HashMap<Integer, ArrayList<Integer>> getConnections() {
-        return gameBoard.getConnections();
+        return service.getConnections();
     }
 
     @GetMapping("/isFlysTurn")
-    public boolean flysTurn() {
-        return gameBoard.isFlysTurn();
+    public boolean isFlysTurn() {
+        return service.isFlysTurn();
     }
 }

@@ -5,7 +5,7 @@ import hu.nye.szakdolgozat.data.model.Player;
 import java.util.*;
 
 @org.springframework.stereotype.Repository
-public class InMemoryRepository implements Repository<Player, UUID>{
+public class InMemoryRepository implements PlayerRepository<Player, UUID> {
 
     private static final Map<UUID, Player> STORAGE = new HashMap<>();
     @Override

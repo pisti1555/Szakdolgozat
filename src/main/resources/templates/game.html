@@ -31,6 +31,20 @@
 </head>
 
 <body onload="loadPage()">
+    <header class="header">
+        <div class="navLeftSide">
+            <a th:href="@{'/'}" class="homeContainer" id="homeButton">
+                <img class="logo" id="homeLogo" th:src="@{/img/HomeLogo.svg}" alt="">
+            </a>
+        </div>
+        <div class="navRightSide">
+            <a id="playerName" href="#">Guest</a>
+            <a>
+                <img class="logo" id="playerLogo" th:src="@{/img/LoginLogo.svg}" alt="">
+            </a>
+        </div>
+    </header>
+
     <div class="centered-div">
         <canvas id="canvas" width="700" height="700"></canvas>
 
