@@ -65,65 +65,7 @@ body {
 }
 
 
-.popup {
-    display: flex;
-    flex-direction: row;
-    visibility: visible;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #008cff;
-    background-color: transparent;
-    backdrop-filter: blur(10px);
-    align-items: center;
-    justify-content: center;
-    border: 1px solid;
-    border-color: aliceblue;
-    border-radius: 20px;
-    width: 80%;
-    height: 40%;
-    z-index: 1;
-}
 
-.popup-closed {
-    display: none;
-    visibility: hidden;
-}
-
-.popup .button {
-    font-family: Franklin Gothic;
-    background-color: transparent;
-    backdrop-filter: blur(30px);
-    position: relative;
-    width: 30%;
-    height: 50%;
-    margin: 1% auto;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    font-size: 25px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: aliceblue;
-    text-decoration: none;
-    border: 1px solid;
-    border-color: aliceblue;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s ease;
-}
-
-.popup .button:hover,
-:focus {
-  color: #ffffff;
-  background: #008cff;
-  border: 1px solid #008cff;
-  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
-  box-shadow: 0 0 5px #008cff, 0 0 20px #008cff, 0 0 50px #008cff,
-    0 0 100px #008cff;
-}
 
 
 .container {
@@ -137,7 +79,7 @@ body {
 }
 
 .container .row {
-    width: 80%;
+    width: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -178,20 +120,66 @@ body {
 
 
 
-/******* Animations *******/
 
-.slideInLeft {
-    animation-name: slideInLeft;
-    animation-duration: 0.5s;
-    animation-timing-function: ease;
+
+
+
+.popup {
+    display: flex;
+    flex-direction: row;
+    visibility: visible;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #008cff;
+    background-color: transparent;
+    backdrop-filter: blur(10px);
+    align-items: center;
+    justify-content: center;
+    border: 1px solid;
+    border-color: aliceblue;
+    border-radius: 20px;
+    width: 80%;
+    height: 40%;
+    z-index: 1;
 }
 
-@keyframes slideInLeft {
-    from {
-        transform: translate(-50%, -50%) translateX(-500px);
-    }
+.popup .button {
+    font-family: Franklin Gothic;
+    background-color: transparent;
+    backdrop-filter: blur(30px);
+    position: relative;
+    width: 30%;
+    height: 50%;
+    margin: 1% auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: aliceblue;
+    text-decoration: none;
+    border: 1px solid;
+    border-color: aliceblue;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
 
-    to {
-        transform: translate(-50%, -50%) translateX(0);
-    }
+.popup .button:hover,
+:focus {
+  color: #ffffff;
+  background: #008cff;
+  border: 1px solid #008cff;
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
+  box-shadow: 0 0 5px #008cff, 0 0 20px #008cff, 0 0 50px #008cff,
+    0 0 100px #008cff;
+}
+
+.closed {
+    display: none;
+    visibility: hidden;
 }

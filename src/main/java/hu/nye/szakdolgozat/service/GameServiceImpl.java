@@ -259,4 +259,11 @@ public class GameServiceImpl implements GameService {
         }
         System.out.println("\n isFlysTurn: " + isFlysTurn + "\n");
     }
+
+    @Override
+    public void newGame() {
+        board.newBoard();
+        isGameRunning = true;
+        isFlysTurn = true;
+    }
 }

@@ -17,8 +17,21 @@ public class GameRestController {
         this.service = service;
     }
 
-    @PostMapping("/playWithFly")
-    public String playWithFly(@RequestBody Move move) {
+    @PostMapping("/playVsPlayer")
+    public String playVsPlayer(@RequestBody Move move) {
+        int from = move.getFrom();
+        int to = move.getTo();
+
+        if (service.isMoveValid(from, to)) {
+            service.move(from, to);
+            return "Moved from " + from + " to " + to;
+        } else {
+            return "Invalid move";
+        }
+    }
+
+    @PostMapping("/playVsSpider")
+    public String playVsSpider(@RequestBody Move move) {
         int from = move.getFrom();
         int to = move.getTo();
 
@@ -31,8 +44,8 @@ public class GameRestController {
         }
     }
 
-    @PostMapping("/playWithSpider")
-    public String playWithSpider(@RequestBody Move move) {
+    @PostMapping("/playVsFly")
+    public String playVsFly(@RequestBody Move move) {
         int from = move.getFrom();
         int to = move.getTo();
 
@@ -76,5 +89,10 @@ public class GameRestController {
     @GetMapping("/isFlysTurn")
     public boolean isFlysTurn() {
         return service.isFlysTurn();
+    }
+
+    @GetMapping("/newGame")
+    public void newGame() {
+        service.newGame();
     }
 }

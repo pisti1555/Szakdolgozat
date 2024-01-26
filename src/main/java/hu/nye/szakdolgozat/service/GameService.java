@@ -24,5 +24,5 @@ public interface GameService {
     boolean isFlysTurn();
     void display();
 
-
+    void newGame();
 }
