@@ -4,6 +4,7 @@ import hu.nye.szakdolgozat.data.model.game.Board;
 import hu.nye.szakdolgozat.data.model.game.Piece;
 import hu.nye.szakdolgozat.data.model.game.Pieces;
 import hu.nye.szakdolgozat.data.repository.GameRepository;
+import org.apache.catalina.valves.JsonErrorReportValve;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +16,16 @@ import java.util.Random;
 @Service
 public class GameServiceImpl implements GameService {
     private final GameRepository board;
+    private short gameMode;
+    private final short PVP = 1;
+    private final short PVS = 2;
+    private final short PVF = 3;
     private final Random random = new Random();
-    private boolean isGameRunning = true;
+    private boolean isGameRunning = false;
     private boolean isFlysTurn = true;
+    private int pieceWon = 0;
+    private int flyStepsDone = 0;
+    private int spiderStepsDone = 0;
 
     @Autowired
     public GameServiceImpl(GameRepository board) {
@@ -35,27 +43,43 @@ public class GameServiceImpl implements GameService {
         board.setBoard(b);
     }
 
+
+
+    /**
+     * performs move on game board, adds +1 to steps done
+     * @param from - number of field to move from
+     * @param to - number of field to move to
+     * @return - true if someone won
+     */
     @Override
-    public void move(int from, int to) {
-        if (whichPiece(from) == board.getBoard().getFly()) moveFly(from, to);
-        for (Piece p : board.getBoard().getSpider()) {
-            if (whichPiece(from) == p) moveSpider(from, to, p);
+    public int move(int from, int to) {
+        if (whichPiece(from) == board.getBoard().getFly()) {
+            moveFly(from, to);
+            flyStepsDone++;
         }
+        for (Piece p : board.getBoard().getSpider()) {
+            if (whichPiece(from) == p) {
+                moveSpider(from, to, p);
+                spiderStepsDone++;
+            }
+        }
+
+        return whoWon();
     }
 
     @Override
     public boolean randomMoveFly() {
-        int availableFields = board.getBoard().getField()[board.getBoard().getFly().location]
-                .getConnection().length;
+        int availableFields = board.getBoard().getField()[board.getBoard().getFly().location].getConnection().length;
         for (int i = 0; i < availableFields; i++) {
             if(board.getBoard().getField()[board.getBoard().getFly().location]
                     .getConnection()[i] == null) availableFields--;
         }
-        int randomConnection = random.nextInt(availableFields);
-        int randomField = board.getBoard().getField()[board.getBoard().getFly().location]
-                .getConnection()[randomConnection].getNumber();
 
         if (isGameRunning) {
+            int randomConnection = random.nextInt(availableFields);
+            int randomField = board.getBoard().getField()[board.getBoard().getFly().location]
+                    .getConnection()[randomConnection].getNumber();
+
             if(isMoveValid(board.getBoard().getFly().location, randomField)) {
                 moveFly(board.getBoard().getFly().location, randomField);
                 return true;
@@ -114,7 +138,7 @@ public class GameServiceImpl implements GameService {
             }
         }
 
-        return !isFromFieldEmpty && isToFieldEmpty && correctPiece && areFieldsConnected && isGameRunning();
+        return isGameRunning() && !isFromFieldEmpty && isToFieldEmpty && correctPiece && areFieldsConnected;
     }
 
     @Override
@@ -126,6 +150,11 @@ public class GameServiceImpl implements GameService {
         }
 
         return loc;
+    }
+
+    @Override
+    public short getGameMode() {
+        return this.gameMode;
     }
 
     @Override
@@ -148,7 +177,6 @@ public class GameServiceImpl implements GameService {
         for (Map.Entry<Integer, ArrayList<Integer>> entry : connections.entrySet()) {
             Integer key = entry.getKey();
             ArrayList<Integer> values = entry.getValue();
-            System.out.println("Key: " + key + ", Values: " + values);
         }
 
         return connections;
@@ -205,7 +233,7 @@ public class GameServiceImpl implements GameService {
                         board.getBoard().getFly().location == 22
         ) {
             isGameRunning = false;
-            System.out.println("Fly won!");
+            pieceWon = 1;
         }
 
         int unavailableFields = 0;
@@ -218,7 +246,7 @@ public class GameServiceImpl implements GameService {
 
         if (unavailableFields >= board.getBoard().getField()[board.getBoard().getFly().location].getConnection().length) {
             isGameRunning = false;
-            System.out.println("Spiders won!");
+            pieceWon = 2;
         }
         return isGameRunning;
     }
@@ -261,9 +289,67 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void newGame() {
-        board.newBoard();
-        isGameRunning = true;
-        isFlysTurn = true;
+    public boolean newGame(String gameMode) {
+        switch (gameMode) {
+            case "pvp": {
+                this.gameMode = PVP;
+                board.newBoard();
+                isGameRunning = true;
+                pieceWon = 0;
+                isFlysTurn = true;
+                flyStepsDone = 0;
+                spiderStepsDone = 0;
+                return true;
+            }
+            case "pvs": {
+                this.gameMode = PVS;
+                board.newBoard();
+                isGameRunning = true;
+                pieceWon = 0;
+                isFlysTurn = true;
+                flyStepsDone = 0;
+                spiderStepsDone = 0;
+                return true;
+            }
+            case "pvf": {
+                this.gameMode = PVF;
+                board.newBoard();
+                isGameRunning = true;
+                pieceWon = 0;
+                isFlysTurn = false;
+                flyStepsDone = 0;
+                spiderStepsDone = 0;
+                return true;
+            }
+            default: return false;
+        }
+    }
+
+    @Override
+    public boolean getIsGameRunning() {
+        return isGameRunning;
+    }
+
+
+    /**
+     * pieceWon's value is 0 if no one won yet
+     *                      1 if fly won
+     *                      2 if spiders won
+     * @return value of pieceWon
+     */
+    @Override
+    public int whoWon() {
+        isGameRunning();
+        return pieceWon;
+    }
+
+    @Override
+    public int getFlyStepsDone() {
+        return flyStepsDone;
+    }
+
+    @Override
+    public int getSpiderStepsDone() {
+        return spiderStepsDone;
     }
 }

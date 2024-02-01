@@ -8,8 +8,8 @@
 
     <title>Spiderweb - Game</title>
 
-    <link rel="stylesheet" th:href="@{/css/game.css}">
-    <link rel="stylesheet" th:href="@{/css/gameMode.css}">
+    <link rel="stylesheet" th:href="@{/css/gameBoard.css}">
+    <link rel="stylesheet" th:href="@{/css/gamePage.css}">
 
     <style th:inline="text">
         body {
@@ -30,7 +30,7 @@
     </style>
 </head>
 
-<body>
+<body onload="checkForAnyUnfinishedGame()">
     <header class="header">
         <div class="navLeftSide">
             <a th:href="@{'/'}" class="homeContainer" id="homeButton">
@@ -45,12 +45,12 @@
         </div>
     </header>
 
-    <div class="container" id="gameModeMain">
+    <div class="menu" id="gameModeMain">
         <div class="row">
-            <a type="button" class="button" id="pvp" onclick="createBoard('pvp'); loadPage(); openPopUp('gameboard'); closePopUp('gameModeMain');">Play against another player</a>
+            <a type="button" class="button" id="pvp" onclick="newGame('pvp'); openPopUp('gameboard'); closePopUp('gameModeMain');">Play against another player</a>
         </div>
         <div class="row">
-            <button type="button" class="button" id="pvcomputer" onclick="openPopUp('playVsComputer'); closePopUp('gameModeMain');">Play against computer</button>
+            <a type="button" class="button" id="pvcomputer" onclick="openPopUp('playVsComputer'); closePopUp('gameModeMain');">Play against computer</a>
         </div>
         <div class="row">
             <a th:href="@{'/'}" type="button" class="button" id="back">Back</a>
@@ -58,26 +58,30 @@
     </div>
 
     <div class="popup closed" id="playVsComputer">
-        <a type="button" class="button" id="pvs" onclick="createBoard('pvs'); loadPage(); openPopUp('gameboard'); closePopUp('playVsComputer');">Play vs Spider</a>
-        <a type="button" class="button" id="pvf" onclick="createBoard('pvf'); loadPage(); openPopUp('gameboard'); closePopUp('playVsComputer');">Play vs Fly</a>
-        <button type="button" class="button" id="back" onclick="closePopUp('playVsComputer'); openPopUp('gameModeMain');">Back</button>
+        <a type="button" class="button" id="pvs" onclick="newGame('pvs'); openPopUp('gameboard'); closePopUp('playVsComputer');">Play vs Spider</a>
+        <a type="button" class="button" id="pvf" onclick="newGame('pvf'); openPopUp('gameboard'); closePopUp('playVsComputer');">Play vs Fly</a>
+        <a type="button" class="button" id="back" onclick="closePopUp('playVsComputer'); openPopUp('gameModeMain');">Back</a>
     </div>
 
-     <div class="popup closed" id="gameFoundPopUp">
-        <a type="button" class="button" id="loadGame" onclick="loadGame()">Load game</a>
-        <a type="button" class="button" id="newGame" onclick="newGame()">New game</a>
-        <a type="button" class="button" id="back" onclick="closePopUp()">Cancel</a>
+    <div class="popup closed" id="gameFoundPopUp">
+        <h2>A game you started is found unfinished</h2>
+        <div class="row">
+            <a type="button" class="button" id="loadGame" onclick=" loadGame(); openPopUp('gameboard'); closePopUp('gameFoundPopUp');">Load</a>
+            <a type="button" class="button" id="back" onclick="openPopUp('gameModeMain'); closePopUp('gameFoundPopUp');">Cancel</a>
+        </div>
     </div>
 
+    <div class="popup closed" id="gameOver"></div>
 
 
-    <div class="centered-div closed" id="gameboard">
+
+    <div class="gameboard closed" id="gameboard">
         <canvas id="canvas" width="700" height="700"></canvas>
     </div>
 
 
 
-    <script th:src="@{/js/gameMode.js}"></script>
-    <script th:src="@{/js/play.js}"></script>
+    <script th:src="@{/js/gamePage.js}"></script>
+    <script th:src="@{/js/gameBoard.js}"></script>
 </body>
 </html>

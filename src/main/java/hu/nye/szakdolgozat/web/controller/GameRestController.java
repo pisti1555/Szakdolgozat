@@ -17,63 +17,40 @@ public class GameRestController {
         this.service = service;
     }
 
-    @PostMapping("/playVsPlayer")
-    public String playVsPlayer(@RequestBody Move move) {
-        int from = move.getFrom();
-        int to = move.getTo();
 
+    @PostMapping("/playVsPlayer")
+    public int playVsPlayer(@RequestParam("from")int from, @RequestParam("to")int to) {
         if (service.isMoveValid(from, to)) {
             service.move(from, to);
-            return "Moved from " + from + " to " + to;
         } else {
-            return "Invalid move";
+            System.out.println("Invalid move");
         }
+
+        return service.whoWon();
     }
 
     @PostMapping("/playVsSpider")
-    public String playVsSpider(@RequestBody Move move) {
-        int from = move.getFrom();
-        int to = move.getTo();
-
+    public int playVsSpider(@RequestParam("from")int from, @RequestParam("to")int to) {
         if (service.isMoveValid(from, to)) {
             service.move(from, to);
             service.randomMoveSpider();
-            return "Moved from " + from + " to " + to;
         } else {
-            return "Invalid move";
+            System.out.println("Invalid move");
         }
+
+        return service.whoWon();
     }
 
     @PostMapping("/playVsFly")
-    public String playVsFly(@RequestBody Move move) {
-        int from = move.getFrom();
-        int to = move.getTo();
-
+    public int playVsFly(@RequestParam("from")int from, @RequestParam("to")int to) {
         if (service.isMoveValid(from, to)) {
             service.move(from, to);
             service.randomMoveFly();
-            return "Moved from " + from + " to " + to;
         } else {
-            return "Invalid move";
+            System.out.println("Invalid move");
         }
-    }
 
-    @PostMapping("/makeMove")
-    public String makeMove(@RequestBody Move move) {
-        int from = move.getFrom();
-        int to = move.getTo();
-
-        if (service.isMoveValid(from, to)) {
-            service.move(from, to);
-            return "Moved from " + from + " to " + to;
-        } else {
-            return "Invalid move";
-        }
-    }
-
-    @PostMapping("/makeRandomMoveSpider")
-    public void makeRandomMoveSpider() {
-        service.randomMoveSpider();
+        return service.whoWon();
     }
 
     @PostMapping("/getPositions")
@@ -86,13 +63,33 @@ public class GameRestController {
         return service.getConnections();
     }
 
+    @GetMapping("/getGameMode")
+    public short getGameMode() {
+        return service.getGameMode();
+    }
+
     @GetMapping("/isFlysTurn")
     public boolean isFlysTurn() {
         return service.isFlysTurn();
     }
 
-    @GetMapping("/newGame")
-    public void newGame() {
-        service.newGame();
+    @PostMapping("/newGame")
+    public void newGame(@RequestParam("mode") String mode) {
+        service.newGame(mode);
+    }
+
+    @GetMapping("/isGameRunning")
+    public boolean isGameRunning() {
+        return service.getIsGameRunning();
+    }
+
+    @GetMapping("/getFlyStepsDone")
+    public int getStepsDone() {
+        return service.getFlyStepsDone();
+    }
+
+    @GetMapping("/getSpiderStepsDone")
+    public int getSpiderStepsDone() {
+        return service.getSpiderStepsDone();
     }
 }

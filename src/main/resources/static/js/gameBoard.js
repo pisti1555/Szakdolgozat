@@ -7,6 +7,42 @@ var locations;
 var connectionMap;
 
 
+function newGame(gameMode) {
+    fetch("http://localhost:8080/api/game/newGame", {
+       method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+           },
+          body: "mode=" + encodeURIComponent(gameMode)
+     }).then(response => response.text())
+         .then(data => {
+             createBoard(gameMode);
+          }).catch(error => console.error("Error:", error));
+}
+
+function loadGame() {
+    var gameMode;
+    fetch('http://localhost:8080/api/game/getGameMode')
+        .then(response => response.json())
+        .then(data => {
+            if (data == 1) {
+                gameMode = "pvp";
+            }
+            if (data == 2) {
+                gameMode = "pvs";
+            }
+            if (data == 3) {
+                gameMode = "pvf";
+            }
+            createBoard(gameMode);
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function clearBoard() {
+    document.getElementById("gameboard").innerHTML = "<canvas id='canvas' width='700' height='700'></canvas>";
+}
+
 function createField(className, id, onclick) {
     var field = document.createElement("div");
     field.className = className;
@@ -18,46 +54,22 @@ function createField(className, id, onclick) {
 function createBoard(gameMode) {
     var gameboard = document.getElementById("gameboard");
 
-    if (gameMode == 'pvp') {
-        for (var i = 0; i < 28; i++) {
-            var className = "subfield";
-            if (i == 5 || i == 10 || i == 14 || i == 18 || i == 22 || i == 27) {
-                className = "field";
-            }
-            var id = "field" + i;
-            var field = createField(className, id, function() { handleOnClick(this.id, 'pvp'); });
-            gameboard.appendChild(field);
+    for (var i = 0; i < 28; i++) {
+        var className = "subfield";
+        if (i == 5 || i == 10 || i == 14 || i == 18 || i == 22 || i == 27) {
+            className = "field";
         }
+        var id = "field" + i;
+        var field = createField(className, id, function() { handleOnClick(this.id, gameMode); });
+        gameboard.appendChild(field);
     }
-    if (gameMode == 'pvf') {
-        for (var i = 0; i < 28; i++) {
-            var className = "subfield";
-            if (i == 5 || i == 10 || i == 14 || i == 18 || i == 22 || i == 27) {
-                className = "field";
-            }
-            var id = "field" + i;
-            var field = createField(className, id, function() { handleOnClick(this.id, 'pvf'); });
-            gameboard.appendChild(field);
-        }
-    }
-    if (gameMode == 'pvs') {
-        for (var i = 0; i < 28; i++) {
-            var className = "subfield";
-            if (i == 5 || i == 10 || i == 14 || i == 18 || i == 22 || i == 27) {
-                className = "field";
-            }
-            var id = "field" + i;
-            var field = createField(className, id, function() { handleOnClick(this.id, 'pvs'); });
-            gameboard.appendChild(field);
-        }
-    }
-    else {
-        console.log("Error while creating board");
-    }
+
+    prepareBoard();
 }
 
 
-function loadPage() {
+
+function prepareBoard() {
     getBoardDataFromServer();
     fetchConnections();
 }
@@ -87,61 +99,56 @@ function selectField(selectedField, selectedFieldIndex) {
 }
 
 function moveToField(from, to, gameMode) {
-
     document.getElementById(lastSelectedField).style.background = 'rgb(0, 4, 120)';
 
-    var moveData = {
-       from: parseInt(from),
-       to: parseInt(to)
-    };
+    const moveParams = new URLSearchParams();
+        moveParams.append('from', from);
+        moveParams.append('to', to);
 
 
     if (gameMode == 'pvp') {
         fetch("http://localhost:8080/api/game/playVsPlayer", {
        method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/x-www-form-urlencoded"
            },
-          body: JSON.stringify(moveData)
+          body: moveParams.toString()
      }).then(response => response.text())
          .then(data => {
-             console.log(data);
-             getBoardDataFromServer();
+            gameWon(data);
+            getBoardDataFromServer();
           }).catch(error => console.error("Error:", error));
     }
-
-    if (gameMode == 'pvs') {
+    else if (gameMode == 'pvs') {
         fetch("http://localhost:8080/api/game/playVsSpider", {
        method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/x-www-form-urlencoded"
            },
-          body: JSON.stringify(moveData)
+          body: moveParams.toString()
      }).then(response => response.text())
          .then(data => {
-             console.log(data);
-             getBoardDataFromServer();
+            gameWon(data);
+            getBoardDataFromServer();
           }).catch(error => console.error("Error:", error));
     }
-
-    if (gameMode == 'pvf') {
+    else if (gameMode == 'pvf') {
         fetch("http://localhost:8080/api/game/playVsFly", {
        method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/x-www-form-urlencoded"
            },
-          body: JSON.stringify(moveData)
+          body: moveParams.toString()
      }).then(response => response.text())
          .then(data => {
-             console.log(data);
-             getBoardDataFromServer();
+            gameWon(data);
+            getBoardDataFromServer();
           }).catch(error => console.error("Error:", error));
     } 
     else {
         console.log("Error while moving piece");
     }
 }
-
 
 function getBoardDataFromServer() {
     fetch("http://localhost:8080/api/game/getPositions", {
@@ -152,7 +159,6 @@ function getBoardDataFromServer() {
           body: JSON.stringify({})
      }).then(response => response.json())
          .then(data => {
-             console.log(data);
              locations = data;
              placePieces(locations);
           }).catch(error => console.error("Error: ", error));
@@ -192,7 +198,6 @@ function fetchConnections() {
 
 function processConnections() {
     for (const [key, value] of Object.entries(connectionMap)) {
-        console.log(`Kulcs: ${key}, Érték: ${value}`);
 
         for (var i in value) {
             drawConnections(key, value[i]);

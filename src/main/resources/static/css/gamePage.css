@@ -10,18 +10,28 @@ body {
     justify-content: center;
     margin: 0;
     height: fit-content;
+
+    font-family: Franklin Gothic;
+    color: #ffffff80;
 }
 
+a {
+    font-family: Franklin Gothic;
+    color: #ffffff80;
+}
+
+
+
+/********* Navigation bar on top of screen *********/
 .header {
     width: 100%;
     height: fit-content;
     background: transparent;
-    backdrop-filter: blur(10px);
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #ffffff80;
     transition: 0.5s ease;
     user-select: none;
+    z-index: 0;
 }
 
 .logo {
@@ -30,8 +40,6 @@ body {
 }
 
 .header .navLeftSide #title {
-    color: #ffffff80;
-    font-family: Franklin Gothic;
     white-space: nowrap;
     margin-left: 5%;
     padding: 0;
@@ -42,7 +50,8 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding-inline: 1%;
+    margin-top: 1%;
+    margin-left: 1%;
 }
 
 .header .navRightSide {
@@ -51,15 +60,14 @@ body {
     align-items: center;
     justify-content: space-between;
     padding-inline: 1%;
+    margin-top: 1%;
+    margin-right: 1%;
 }
 
 #playerName {
-    font-family: Franklin Gothic;
     font-size: 100%;
     font-weight: 200;
     text-decoration: none;
-    color: #ffffff80;
-    text-shadow: none;
     cursor: pointer;
     margin-right: 5%;
 }
@@ -68,7 +76,8 @@ body {
 
 
 
-.container {
+/********* Main menu *********/
+.menu {
     margin-top: 5%;
     text-transform: uppercase;
     display: flex;
@@ -78,20 +87,21 @@ body {
     width: 80%;
 }
 
-.container .row {
-    width: 50%;
+.row {
+    width: 100%;
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding-top: 5%;
+    padding-top: 2%;
 }
 
-.container .row .button {
-    font-family: Franklin Gothic;
+.button {
     backdrop-filter: blur(10px);
     background: transparent;
-    width: 100%;
-    padding: 5%;
+    width: 80%;
+    padding: 2%;
+    margin: 2%;
     text-align: center;
     text-transform: uppercase;
     text-decoration: none;
@@ -99,7 +109,6 @@ body {
     border-radius: 30px;
     font-size: 30px;
     font-weight: 600;
-    color: #ffffff80;
     text-shadow: none;
     cursor: pointer;
     box-shadow: transparent;
@@ -108,7 +117,7 @@ body {
     user-select: none;
 }
 
-.container .row .button:hover,
+.button:hover,
 :focus {
   color: #ffffff;
   background: #008cff;
@@ -121,18 +130,15 @@ body {
 
 
 
-
-
-
+/********* Pop-Up windows *********/
 .popup {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     visibility: visible;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #008cff;
     background-color: transparent;
     backdrop-filter: blur(10px);
     align-items: center;
@@ -140,46 +146,17 @@ body {
     border: 1px solid;
     border-color: aliceblue;
     border-radius: 20px;
-    width: 80%;
-    height: 40%;
+    width: 60%;
+    height: fit-content;
+    padding: 2%;
     z-index: 1;
-}
-
-.popup .button {
-    font-family: Franklin Gothic;
-    background-color: transparent;
-    backdrop-filter: blur(30px);
-    position: relative;
-    width: 30%;
-    height: 50%;
-    margin: 1% auto;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    font-size: 25px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: aliceblue;
-    text-decoration: none;
-    border: 1px solid;
-    border-color: aliceblue;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s ease;
-}
-
-.popup .button:hover,
-:focus {
-  color: #ffffff;
-  background: #008cff;
-  border: 1px solid #008cff;
-  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
-  box-shadow: 0 0 5px #008cff, 0 0 20px #008cff, 0 0 50px #008cff,
-    0 0 100px #008cff;
 }
 
 .closed {
     display: none;
     visibility: hidden;
+}
+
+#gameFoundPopUp h2 {
+    text-shadow: 0 0 5px #55555580;
 }

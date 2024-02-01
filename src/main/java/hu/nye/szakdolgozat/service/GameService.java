@@ -10,12 +10,13 @@ public interface GameService {
     Board getBoard();
     void setBoard(Board b);
 
-    void move(int from, int to);
+    int move(int from, int to);
     boolean randomMoveFly();
     boolean randomMoveSpider();
 
     boolean isMoveValid(int from, int to);
     int[] getPositions();
+    short getGameMode();
     HashMap<Integer, ArrayList<Integer>> getConnections();
 
     void moveFly(int from, int to);
@@ -24,5 +25,9 @@ public interface GameService {
     boolean isFlysTurn();
     void display();
 
-    void newGame();
+    boolean newGame(String gameMode);
+    boolean getIsGameRunning();
+    int whoWon();
+    int getFlyStepsDone();
+    int getSpiderStepsDone();
 }
