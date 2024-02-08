@@ -10,18 +10,22 @@ body {
     justify-content: center;
     margin: 0;
     height: fit-content;
+
+    font-family: Franklin Gothic;
+    color: #ffffff80;
 }
 
 a {
     color: #ffffff80;
-    font-family: Franklin Gothic;
 }
 
-h2 {
-    color: #ffffff80;
-    font-family: Franklin Gothic;
+label {
+    padding-right: 2vh;
 }
 
+.title {
+    padding: 1vh;
+}
 
 
 /********* Navigation bar on top of screen *********/
@@ -73,38 +77,68 @@ h2 {
 }
 
 
-/********* Main menu *********/
+
 .container {
-    margin-top: 5%;
-    text-transform: uppercase;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 80%;
+    border: 1px solid #ffffff80;
+    border-radius: 50px;
+    padding: 10px;
+    width: fit-content;
+    height: fit-content;
+    background: transparent;
+    backdrop-filter: blur(20px);
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-.container .row {
-    width: 80%;
+.inputContainer {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 5%;
+    flex-direction: column;
+    width: fit-content;
+    height: fit-content;
 }
 
-.container .row .button {
+.row {
+    display: flex;
+    flex-direction: row;
+    padding: 1vh;
+}
+
+.input {
+    border-radius: 20px;
+    padding: 1vh;
+    background: transparent;
+}
+
+.input .row {
+    justify-content: space-between;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.button {
     backdrop-filter: blur(10px);
     background: transparent;
-    width: 100%;
-    padding: 5%;
     text-align: center;
-    text-transform: uppercase;
     text-decoration: none;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
+    width: fit-content;
+    height: fit-content;
+    padding: 2vh;
+    margin: 2vh;
+    margin-bottom: 1vh;
     border-radius: 30px;
-    font-size: 30px;
+    font-size: 20px;
     font-weight: 600;
-    text-shadow: none;
+    text-shadow: 0 0 5px darkblue;
     cursor: pointer;
     box-shadow: transparent;
     border: 1px solid #ffffff80;
@@ -112,7 +146,7 @@ h2 {
     user-select: none;
 }
 
-.container .row .button:hover,
+.button:hover,
 :focus {
   color: #ffffff;
   background: #008cff;

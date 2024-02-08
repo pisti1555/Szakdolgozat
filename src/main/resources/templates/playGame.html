@@ -6,7 +6,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Spiderweb - Game</title>
+    <title>Play</title>
 
     <link rel="stylesheet" th:href="@{/css/gameBoard.css}">
     <link rel="stylesheet" th:href="@{/css/gamePage.css}">
@@ -38,8 +38,8 @@
             </a>
         </div>
         <div class="navRightSide">
-            <a id="playerName" href="#">Guest</a>
-            <a>
+            <a id="login" th:href="@{/login}">
+                <label for="playerLogo" id="playerNameLabel">Guest</label>
                 <img class="logo" id="playerLogo" th:src="@{/img/LoginLogo.svg}" alt="">
             </a>
         </div>
@@ -47,7 +47,7 @@
 
     <div class="menu" id="gameModeMain">
         <div class="row">
-            <a type="button" class="button" id="pvp" onclick="newGame('pvp'); openPopUp('gameboard'); closePopUp('gameModeMain');">Play against another player</a>
+            <a type="button" class="button" id="pvp" onclick="newGame('pvp'); openPopUp('gameboard'); closePopUp('gameModeMain');">Play against another user</a>
         </div>
         <div class="row">
             <a type="button" class="button" id="pvcomputer" onclick="openPopUp('playVsComputer'); closePopUp('gameModeMain');">Play against computer</a>
@@ -83,5 +83,7 @@
 
     <script th:src="@{/js/gamePage.js}"></script>
     <script th:src="@{/js/gameBoard.js}"></script>
+    <script th:src="@{/js/popup.js}"></script>
+    <script th:src="@{/js/userData.js}"></script>
 </body>
 </html>

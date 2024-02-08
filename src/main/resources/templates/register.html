@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Create an account</title>
+
+    <link rel="stylesheet" th:href="@{/css/createPlayer.css}"/>
+
+    <style th:inline="text">
+        body {
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: url([[@{/img/GamePageBackground.jpg}]]) no-repeat center center fixed;
+            filter: brightness(80%);
+            z-index: -1;
+        }
+    </style>
+
+</head>
+<body>
+    <header class="header">
+        <div class="navLeftSide">
+            <a th:href="@{'/'}" class="homeContainer" id="homeButton">
+                <img class="logo" id="homeLogo" th:src="@{/img/HomeLogo.svg}" alt="">
+            </a>
+            <h2 id="title">Spiderweb game</h2>
+        </div>
+        <div class="navRightSide">
+            <a id="login" onclick="openPopUp('loginPanel')">
+                <label for="playerLogo" id="playerNameLabel">Guest</label>
+                <img class="logo" id="playerLogo" th:src="@{/img/LoginLogo.svg}" alt="">
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="title">Create a new account</h1>
+
+        <div class="inputContainer">
+            <div class="row">
+                <label for="username">Username: </label>
+                <input type="text" id="username" class="input" required>
+            </div>
+            <div class="row">
+                <label for="firstName">First name: </label>
+                <input type="text" id="firstName" class="input" required>
+            </div>
+            <div class="row">
+                <label for="lastName">Last name: </label>
+                <input type="text" id="lastName" class="input" required>
+            </div>
+            <div class="row">
+                <label for="password">Password: </label>
+                <input type="password" id="password" class="input" required>
+            </div>
+        </div>
+        
+        <div class="buttonContainer">
+            <div class="row">
+                <a class="button" th:href="@{/}">Home</a>
+                <a class="button" onclick="create()">Register</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function create() {
+        var username = document.querySelector('#username').value;
+        var firstName = document.querySelector('#firstName').value;
+        var lastName = document.querySelector('#lastName').value;
+        var password = document.querySelector('#password').value;
+
+        var data = {
+            username: username,
+            firstName: firstName,
+            lastName: lastName,
+            password: password
+        };
+
+        fetch("http://localhost:8080/api/user/register", {
+        method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }).then(response => response.json())
+            .then(data => {
+                console.log(data);
+
+                var success = true;
+                for (let key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        if (data[key] === null) {
+                            console.log(`${key} is null`);
+                            success = false;
+                        }
+                    }
+                }
+
+                if (success) {
+                    alert("You registered successfully!");
+                } else {
+                    alert("Please fill out all the required fields properly!");
+                }
+            }).catch(error => console.error("Error: ", error));
+        }
+        
+    </script>
+    <script th:src="@{/js/popup.js}"></script>
+    <script th:src="@{/js/userData.js}"></script>
+</body>
+</html>

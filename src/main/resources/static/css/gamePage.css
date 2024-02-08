@@ -24,55 +24,52 @@ a {
 
 /********* Navigation bar on top of screen *********/
 .header {
+    margin-top: 10px;
     width: 100%;
     height: fit-content;
     background: transparent;
+    backdrop-filter: blur(10px);
     display: flex;
     justify-content: space-between;
     transition: 0.5s ease;
     user-select: none;
-    z-index: 0;
+    z-index: 1;
+
+    .navLeftSide {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding-inline: 1%;
+
+        #title {
+            white-space: nowrap;
+            margin-left: 5%;
+        }
+    }
+
+    .navRightSide {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding-inline: 1%;
+
+        a {
+            display: flex;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 400;
+            text-decoration: none;
+            text-shadow: none;
+        }
+
+        .logo {
+            padding: 1%;
+            margin-left: 10px;
+        }
+    }
 }
-
-.logo {
-    cursor: pointer;
-    padding: 1%;
-}
-
-.header .navLeftSide #title {
-    white-space: nowrap;
-    margin-left: 5%;
-    padding: 0;
-}
-
-.header .navLeftSide {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 1%;
-    margin-left: 1%;
-}
-
-.header .navRightSide {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding-inline: 1%;
-    margin-top: 1%;
-    margin-right: 1%;
-}
-
-#playerName {
-    font-size: 100%;
-    font-weight: 200;
-    text-decoration: none;
-    cursor: pointer;
-    margin-right: 5%;
-}
-
-
 
 
 

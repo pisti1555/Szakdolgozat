@@ -6,7 +6,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Spiderweb - Home</title>
+    <title>Home</title>
 
     <link rel="stylesheet" th:href="@{/css/index.css}"/>
     <style th:inline="text">
@@ -26,21 +26,23 @@
             <h2 id="title">Spiderweb game</h2>
         </div>
         <div class="navRightSide">
-            <a id="playerName" href="">Guest</a>
-            <a href="">
+            <a id="login" th:href="@{/login}">
+                <label for="playerLogo" id="playerNameLabel">Guest</label>
                 <img class="logo" id="playerLogo" th:src="@{/img/LoginLogo.svg}" alt="">
             </a>
-
         </div>
     </header>
 
-     <div class="container">
+    <div class="container">
         <div class="row">
             <a th:href="@{'/playGame'}" type="button" class="button">Play</a>
         </div>
         <div class="row">
-            <a th:href="@{'/players'}" type="button" class="button">Scoreboard</a>
+            <a th:href="@{'/scoreboard'}" type="button" class="button">Scoreboard</a>
         </div>
     </div>
+
+    <script th:src="@{/js/popup.js}"></script>
+    <script th:src="@{/js/userData.js}"></script>
 </body>
 </html>

@@ -9,11 +9,11 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/game")
-public class GameRestController {
+public class GameController {
     private final GameService service;
 
     @Autowired
-    public GameRestController(GameService service) {
+    public GameController(GameService service) {
         this.service = service;
     }
 
