@@ -10,16 +10,16 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/api/game")
 public class GameController {
-    private final GameService service;
+    private final Session session;
 
     @Autowired
-    public GameController(GameService service) {
-        this.service = service;
+    public GameController(Session session) {
+        this.session = session;
     }
-
 
     @PostMapping("/playVsPlayer")
     public int playVsPlayer(@RequestParam("from")int from, @RequestParam("to")int to) {
+        GameService service = session.getGameService();
         if (service.isMoveValid(from, to)) {
             service.move(from, to);
         } else {
@@ -31,6 +31,7 @@ public class GameController {
 
     @PostMapping("/playVsSpider")
     public int playVsSpider(@RequestParam("from")int from, @RequestParam("to")int to) {
+        GameService service = session.getGameService();
         if (service.isMoveValid(from, to)) {
             service.move(from, to);
             service.randomMoveSpider();
@@ -43,6 +44,7 @@ public class GameController {
 
     @PostMapping("/playVsFly")
     public int playVsFly(@RequestParam("from")int from, @RequestParam("to")int to) {
+        GameService service = session.getGameService();
         if (service.isMoveValid(from, to)) {
             service.move(from, to);
             service.randomMoveFly();
@@ -55,41 +57,50 @@ public class GameController {
 
     @PostMapping("/getPositions")
     public int[] sendPositionsToClient() {
+        GameService service = session.getGameService();
         return service.getPositions();
     }
 
     @GetMapping("/getConnections")
     public HashMap<Integer, ArrayList<Integer>> getConnections() {
+        GameService service = session.getGameService();
         return service.getConnections();
     }
 
     @GetMapping("/getGameMode")
     public short getGameMode() {
+        GameService service = session.getGameService();
         return service.getGameMode();
     }
 
     @GetMapping("/isFlysTurn")
     public boolean isFlysTurn() {
+        GameService service = session.getGameService();
         return service.isFlysTurn();
     }
 
     @PostMapping("/newGame")
     public void newGame(@RequestParam("mode") String mode) {
+        GameService service = session.getGameService();
         service.newGame(mode);
     }
 
+
     @GetMapping("/isGameRunning")
     public boolean isGameRunning() {
+        GameService service = session.getGameService();
         return service.getIsGameRunning();
     }
 
     @GetMapping("/getFlyStepsDone")
     public int getStepsDone() {
+        GameService service = session.getGameService();
         return service.getFlyStepsDone();
     }
 
     @GetMapping("/getSpiderStepsDone")
     public int getSpiderStepsDone() {
+        GameService service = session.getGameService();
         return service.getSpiderStepsDone();
     }
 }

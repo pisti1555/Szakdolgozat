@@ -6,10 +6,10 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Scoreboard</title>
+    <title>Profile</title>
 
     <link rel="stylesheet" th:href="@{/css/navbar.css}"/>
-    <link rel="stylesheet" th:href="@{/css/scoreboard.css}"/>
+    <link rel="stylesheet" th:href="@{/css/profile.css}"/>
 
     <style th:inline="text">
         body {
@@ -47,29 +47,32 @@
     </header>
 
     <div class="container">
-        <h2 class="title">Scoreboard</h2>
+        <h1 class="title" th:text="'Profile of ' + ${client.username}"></h1>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Games played</th>
-                    <th>Steps made</th>
-                    <th>Games won</th>                
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="user : ${users}">
-                    <td>
-                        <a th:href="@{'/' + ${user.username}}" th:text="${user.username}"></a>
-                    </td>
-                    <td th:text="${user.playedGames}"></td>
-                    <td th:text="${user.stepsMade}"></td>
-                    <td th:text="${user.wonGames}"></td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="userdata">
+            <div class="row">
+                <h3 th:text="'Username: ' + ${client.username}">
+                </h3>
+            </div>
+            <div class="row">
+                <h3 th:text="'Games played: ' + ${client.playedGames}"></h3>
+            </div>
+            <div class="row">
+                <h3 th:text="'Games won: ' + ${client.wonGames}"></h3>
+            </div>
+            <div class="row">
+                <h3 th:text="'Steps made: ' + ${client.stepsMade}"></h3>
+            </div>
+        </div>
         
+        <div class="buttonContainer">
+            <div class="row">
+                <a class="button" th:href="@{/}">Home</a>
+                <a class="button" th:if="${isLoggedIn == true}" th:href="@{/logout}">Log out</a>
+                <a class="button" th:unless="${isLoggedIn == true}" th:href="@{/login}">Log in</a>
+                <a class="button" th:if="${isLoggedIn == true}" th:href="@{/edit}">Edit profile</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>

@@ -16,45 +16,87 @@ body {
 }
 
 a {
-    font-family: Franklin Gothic;
     color: #ffffff80;
 }
 
+label {
+    padding-right: 2vh;
+}
 
-/********* Main menu *********/
-.menu {
-    margin-top: 5%;
-    text-transform: uppercase;
-    display: flex;
-    flex-direction: column;
+.title {
+    padding: 1vh;
+}
+
+
+.container {
     align-items: center;
     justify-content: center;
-    width: 80%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ffffff80;
+    border-radius: 50px;
+    padding: 10px;
+    width: fit-content;
+    height: fit-content;
+    background: transparent;
+    backdrop-filter: blur(20px);
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    height: fit-content;
 }
 
 .row {
-    width: 100%;
     display: flex;
     flex-direction: row;
+    padding: 1vh;
     align-items: center;
     justify-content: center;
-    padding-top: 2%;
+}
+
+.input {
+    border-radius: 20px;
+    padding: 1vh;
+    background: transparent;
+}
+
+.input .row {
+    justify-content: space-between;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    .row {
+        padding: 0%;
+    }
 }
 
 .button {
     backdrop-filter: blur(10px);
     background: transparent;
-    width: 80%;
-    padding: 2%;
-    margin: 2%;
     text-align: center;
-    text-transform: uppercase;
     text-decoration: none;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
+    width: fit-content;
+    height: fit-content;
+    padding: 2vh;
+    margin: 2vh;
+    margin-bottom: 1vh;
     border-radius: 30px;
-    font-size: 30px;
+    font-size: 20px;
     font-weight: 600;
-    text-shadow: none;
+    text-shadow: 0 0 5px darkblue;
     cursor: pointer;
     box-shadow: transparent;
     border: 1px solid #ffffff80;
@@ -72,36 +114,8 @@ a {
     0 0 100px #008cff;
 }
 
-
-
-
-/********* Pop-Up windows *********/
-.popup {
-    display: flex;
-    flex-direction: column;
-    visibility: visible;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: transparent;
-    backdrop-filter: blur(10px);
-    align-items: center;
-    justify-content: center;
-    border: 1px solid;
-    border-color: aliceblue;
-    border-radius: 20px;
-    width: 60%;
-    height: fit-content;
-    padding: 2%;
-    z-index: 1;
-}
-
-.closed {
-    display: none;
-    visibility: hidden;
-}
-
-#gameFoundPopUp h2 {
-    text-shadow: 0 0 5px #55555580;
+.register {
+    .row {
+        margin-inline: 10px;
+    }
 }

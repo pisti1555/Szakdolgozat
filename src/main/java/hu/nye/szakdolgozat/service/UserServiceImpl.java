@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -17,6 +18,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public User getUser(String username) {
+        if (userRepository.findById(username).isPresent()) {
+            return userRepository.findById(username).get();
+        } else return null;
     }
 
     /**
@@ -39,6 +47,17 @@ public class UserServiceImpl implements UserService {
                 } else return new User();
             }
         }
+    }
+
+    @Override
+    public User login(User user) {
+        String username = user.getUsername();
+        String password = user.getPassword();
+        if (userRepository.findById(username).isPresent()) {
+            if (password.equals(userRepository.findById(username).get().getPassword())) {
+                return userRepository.findById(username).get();
+            } else return null;
+        } else return null;
     }
 
     /**

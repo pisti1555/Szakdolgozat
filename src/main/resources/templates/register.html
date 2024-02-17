@@ -8,7 +8,8 @@
 
     <title>Create an account</title>
 
-    <link rel="stylesheet" th:href="@{/css/createPlayer.css}"/>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}"/>
+    <link rel="stylesheet" th:href="@{/css/register.css}"/>
 
     <style th:inline="text">
         body {
@@ -34,12 +35,12 @@
         <div class="navLeftSide">
             <a th:href="@{'/'}" class="homeContainer" id="homeButton">
                 <img class="logo" id="homeLogo" th:src="@{/img/HomeLogo.svg}" alt="">
+                <h2 id="title">Spiderweb game</h2>
             </a>
-            <h2 id="title">Spiderweb game</h2>
         </div>
         <div class="navRightSide">
-            <a id="login" onclick="openPopUp('loginPanel')">
-                <label for="playerLogo" id="playerNameLabel">Guest</label>
+            <a id="login" th:href="@{/profile}">
+                <h3 class="username" th:text="${client.username}"></h3>
                 <img class="logo" id="playerLogo" th:src="@{/img/LoginLogo.svg}" alt="">
             </a>
         </div>
@@ -48,77 +49,36 @@
     <div class="container">
         <h1 class="title">Create a new account</h1>
 
-        <div class="inputContainer">
-            <div class="row">
-                <label for="username">Username: </label>
-                <input type="text" id="username" class="input" required>
+        <form th:action="@{/register}" method="post">
+            <div class="inputContainer">
+
+                <h3 th:if="${exists == true}">Username is already taken</h3>
+
+                <div class="row">
+                    <label for="username"> Username: </label>
+                    <input th:name="username" type="text" id="username" class="input" required>
+                </div>
+                <div class="row">
+                    <label for="firstName"> First name: </label>
+                    <input th:name="firstName" type="text" id="firstName" class="input" required>
+                </div>
+                <div class="row">
+                    <label for="lastName"> Last name: </label>
+                    <input th:name="lastName" type="text" id="lastName" class="input" required>
+                </div>
+                <div class="row">
+                    <label for="password"> Password: </label>
+                    <input th:name="password" type="password" id="password" class="input" required>
+                </div>
             </div>
-            <div class="row">
-                <label for="firstName">First name: </label>
-                <input type="text" id="firstName" class="input" required>
-            </div>
-            <div class="row">
-                <label for="lastName">Last name: </label>
-                <input type="text" id="lastName" class="input" required>
-            </div>
-            <div class="row">
-                <label for="password">Password: </label>
-                <input type="password" id="password" class="input" required>
-            </div>
-        </div>
         
-        <div class="buttonContainer">
-            <div class="row">
-                <a class="button" th:href="@{/}">Home</a>
-                <a class="button" onclick="create()">Register</a>
+            <div class="buttonContainer">
+                <div class="row">
+                    <a class="button" th:href="@{/}">Home</a>
+                    <button class="button" type="submit">Register</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
-
-    <script>
-        function create() {
-        var username = document.querySelector('#username').value;
-        var firstName = document.querySelector('#firstName').value;
-        var lastName = document.querySelector('#lastName').value;
-        var password = document.querySelector('#password').value;
-
-        var data = {
-            username: username,
-            firstName: firstName,
-            lastName: lastName,
-            password: password
-        };
-
-        fetch("http://localhost:8080/api/user/register", {
-        method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        }).then(response => response.json())
-            .then(data => {
-                console.log(data);
-
-                var success = true;
-                for (let key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        if (data[key] === null) {
-                            console.log(`${key} is null`);
-                            success = false;
-                        }
-                    }
-                }
-
-                if (success) {
-                    alert("You registered successfully!");
-                } else {
-                    alert("Please fill out all the required fields properly!");
-                }
-            }).catch(error => console.error("Error: ", error));
-        }
-        
-    </script>
-    <script th:src="@{/js/popup.js}"></script>
-    <script th:src="@{/js/userData.js}"></script>
 </body>
 </html>

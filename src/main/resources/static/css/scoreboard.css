@@ -25,55 +25,6 @@ h2 {
 	letter-spacing: 1px;
 }
 
-/********* Navigation bar on top of screen *********/
-.header {
-    width: 100%;
-    height: fit-content;
-    background: transparent;
-    backdrop-filter: blur(10px);
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #ffffff80;
-    transition: 0.5s ease;
-    user-select: none;
-
-    .navLeftSide {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        padding-inline: 1%;
-
-        #title {
-            white-space: nowrap;
-            margin-left: 5%;
-        }
-    }
-
-    .navRightSide {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        padding-inline: 1%;
-
-        a {
-            display: flex;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 400;
-            text-decoration: none;
-            text-shadow: none;
-        }
-
-        .logo {
-            padding: 1%;
-            margin-left: 10px;
-        }
-    }
-}
-
-
 
 .container {
 	position: relative;
@@ -122,4 +73,17 @@ tbody {
 	td {
 		position: relative;
 	}
+}
+
+tbody tr:hover {
+	background: #0099ff1c;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	color: #ffffff;
+	text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
 }

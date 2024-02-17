@@ -2,6 +2,7 @@ package hu.nye.szakdolgozat.service;
 
 import hu.nye.szakdolgozat.data.model.game.Board;
 import hu.nye.szakdolgozat.data.model.game.Piece;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.ArrayList;
 import java.util.HashMap;

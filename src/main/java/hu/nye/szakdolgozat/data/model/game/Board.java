@@ -1,6 +1,7 @@
 package hu.nye.szakdolgozat.data.model.game;
 
 public class Board {
+    private Integer id;
     private final Field[] field;
     private final Piece fly;
     private final Piece[] spider;

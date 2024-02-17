@@ -10,6 +10,7 @@ var connectionMap;
 function newGame(gameMode) {
     fetch("http://localhost:8080/api/game/newGame", {
        method: "POST",
+       credentials: 'include',
           headers: {
             "Content-Type": "application/x-www-form-urlencoded"
            },

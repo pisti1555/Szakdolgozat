@@ -1,44 +1,99 @@
 package hu.nye.szakdolgozat.web.controller;
 
 import hu.nye.szakdolgozat.data.model.User;
+import hu.nye.szakdolgozat.service.GameService;
 import hu.nye.szakdolgozat.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class PathController {
-    UserService userService;
+    private final Session session;
+
+
     @Autowired
-    public PathController(UserService userService) {
-        this.userService = userService;
+    public PathController(Session session) {
+        this.session = session;
     }
 
     @GetMapping()
-    public String home(Model model, User user) {
-        model.addAttribute("player", user);
+    public String home(Model model) {
+        model.addAttribute("client", session.getUser());
         return "index";
     }
 
     @GetMapping("/playGame")
-    public String play() {
+    public String play(Model model) {
+        model.addAttribute("client", session.getUser());
         return "playGame";
     }
 
+    @GetMapping("/profile")
+    public String profile(Model model) {
+        model.addAttribute("users", session.userService.showAll());
+        model.addAttribute("isLoggedIn", session.userService.exists(session.getUser().getUsername()));
+        model.addAttribute("client", session.getUser());
+        return "yourProfile";
+    }
+
+    @GetMapping("/{username}")
+    public String profile(Model model, @PathVariable String username) {
+        model.addAttribute("client", session.getUser());
+        model.addAttribute("user", session.userService.getUser(username));
+        return "othersProfile";
+    }
+
     @GetMapping("/register")
-    public String register() {
+    public String register(Model model) {
+        model.addAttribute("client", session.getUser());
         return "register";
     }
 
+    @PostMapping("/register")
+    public String register(Model model, User newUser) {
+        model.addAttribute("client", session.getUser());
+
+        if (session.userService.exists(newUser.getUsername())) {
+            model.addAttribute("exists", true);
+            return "register";
+        } else {
+            session.userService.save(newUser);
+            model.addAttribute("exists", false);
+            return "index";
+        }
+    }
+
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
+        model.addAttribute("client", session.getUser());
+        model.addAttribute("isLoggedIn", session.isLoggedIn());
         return "login";
+    }
+
+    @PostMapping("/login")
+    public String login(Model model, User user) {
+        model.addAttribute("client", session.getUser());
+        model.addAttribute("isLoggedIn", session.isLoggedIn());
+
+        if (session.userService.login(user) != null) {
+            session.setUser(session.userService.login(user));
+            model.addAttribute("success", true);
+            return "index";
+        } else {
+            model.addAttribute("success", false);
+            return "login";
+        }
     }
 
     @GetMapping("/scoreboard")
     public String scoreboard(Model model) {
-        model.addAttribute("users", userService.showAll());
+        model.addAttribute("users", session.userService.showAll());
+        model.addAttribute("client", session.getUser());
         return "scoreboard";
     }
 }

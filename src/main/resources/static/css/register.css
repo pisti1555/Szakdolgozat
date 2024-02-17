@@ -28,56 +28,6 @@ label {
 }
 
 
-/********* Navigation bar on top of screen *********/
-.header {
-    width: 100%;
-    height: fit-content;
-    background: transparent;
-    backdrop-filter: blur(10px);
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #ffffff80;
-    transition: 0.5s ease;
-    user-select: none;
-
-    .navLeftSide {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        padding-inline: 1%;
-
-        #title {
-            white-space: nowrap;
-            margin-left: 5%;
-        }
-    }
-
-    .navRightSide {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        padding-inline: 1%;
-
-        a {
-            display: flex;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 400;
-            text-decoration: none;
-            text-shadow: none;
-        }
-
-        .logo {
-            padding: 1%;
-            margin-left: 10px;
-        }
-    }
-}
-
-
-
 .container {
     display: flex;
     flex-direction: column;
@@ -106,6 +56,8 @@ label {
     display: flex;
     flex-direction: row;
     padding: 1vh;
+    align-items: center;
+    justify-content: center;
 }
 
 .input {

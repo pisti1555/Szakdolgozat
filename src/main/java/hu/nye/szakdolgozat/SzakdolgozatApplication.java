@@ -1,5 +1,6 @@
 package hu.nye.szakdolgozat;
 
+import hu.nye.szakdolgozat.web.controller.Session;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

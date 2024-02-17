@@ -8,6 +8,7 @@
 
     <title>Home</title>
 
+    <link rel="stylesheet" th:href="@{/css/navbar.css}"/>
     <link rel="stylesheet" th:href="@{/css/index.css}"/>
     <style th:inline="text">
         body {
@@ -22,12 +23,12 @@
         <div class="navLeftSide">
             <a th:href="@{'/'}" class="homeContainer" id="homeButton">
                 <img class="logo" id="homeLogo" th:src="@{/img/HomeLogo.svg}" alt="">
+                <h2 id="title">Spiderweb game</h2>
             </a>
-            <h2 id="title">Spiderweb game</h2>
         </div>
         <div class="navRightSide">
-            <a id="login" th:href="@{/login}">
-                <label for="playerLogo" id="playerNameLabel">Guest</label>
+            <a id="login" th:href="@{/profile}">
+                <h3 class="username" th:text="${client.username}"></h3>
                 <img class="logo" id="playerLogo" th:src="@{/img/LoginLogo.svg}" alt="">
             </a>
         </div>
@@ -41,8 +42,5 @@
             <a th:href="@{'/scoreboard'}" type="button" class="button">Scoreboard</a>
         </div>
     </div>
-
-    <script th:src="@{/js/popup.js}"></script>
-    <script th:src="@{/js/userData.js}"></script>
 </body>
 </html>

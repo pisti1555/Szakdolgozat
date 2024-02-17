@@ -3,9 +3,9 @@ package hu.nye.szakdolgozat.service;
 import hu.nye.szakdolgozat.data.model.game.Board;
 import hu.nye.szakdolgozat.data.model.game.Piece;
 import hu.nye.szakdolgozat.data.model.game.Pieces;
-import hu.nye.szakdolgozat.data.repository.GameRepository;
-import org.apache.catalina.valves.JsonErrorReportValve;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,7 +15,8 @@ import java.util.Random;
 
 @Service
 public class GameServiceImpl implements GameService {
-    private final GameRepository board;
+    private Board board;
+
     private short gameMode;
     private final short PVP = 1;
     private final short PVS = 2;
@@ -28,19 +29,21 @@ public class GameServiceImpl implements GameService {
     private int spiderStepsDone = 0;
 
     @Autowired
-    public GameServiceImpl(GameRepository board) {
-        this.board = board;
+    public GameServiceImpl() {
+        this.board = new Board();
     }
+
 
     //---------------- Main methods to use in Controller ----------------
     @Override
     public Board getBoard() {
-        return board.getBoard();
+        return this.board;
+
     }
 
     @Override
     public void setBoard(Board b) {
-        board.setBoard(b);
+        this.board = b;
     }
 
 
@@ -53,11 +56,11 @@ public class GameServiceImpl implements GameService {
      */
     @Override
     public int move(int from, int to) {
-        if (whichPiece(from) == board.getBoard().getFly()) {
+        if (whichPiece(from) == board.getFly()) {
             moveFly(from, to);
             flyStepsDone++;
         }
-        for (Piece p : board.getBoard().getSpider()) {
+        for (Piece p : board.getSpider()) {
             if (whichPiece(from) == p) {
                 moveSpider(from, to, p);
                 spiderStepsDone++;
@@ -69,19 +72,19 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public boolean randomMoveFly() {
-        int availableFields = board.getBoard().getField()[board.getBoard().getFly().location].getConnection().length;
+        int availableFields = board.getField()[board.getFly().location].getConnection().length;
         for (int i = 0; i < availableFields; i++) {
-            if(board.getBoard().getField()[board.getBoard().getFly().location]
+            if(board.getField()[board.getFly().location]
                     .getConnection()[i] == null) availableFields--;
         }
 
         if (isGameRunning) {
             int randomConnection = random.nextInt(availableFields);
-            int randomField = board.getBoard().getField()[board.getBoard().getFly().location]
+            int randomField = board.getField()[board.getFly().location]
                     .getConnection()[randomConnection].getNumber();
 
-            if(isMoveValid(board.getBoard().getFly().location, randomField)) {
-                moveFly(board.getBoard().getFly().location, randomField);
+            if(isMoveValid(board.getFly().location, randomField)) {
+                moveFly(board.getFly().location, randomField);
                 return true;
             } else {
                 randomMoveFly();
@@ -92,16 +95,16 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public boolean randomMoveSpider() {
-        Piece randomSpider = board.getBoard().getSpider()[random.nextInt(board.getBoard().getSpider().length)];
+        Piece randomSpider = board.getSpider()[random.nextInt(board.getSpider().length)];
 
         int unavailableFields = 0;
-        for (int i = 0; i < board.getBoard().getField()[randomSpider.location].getConnection().length; i++) {
-            if(board.getBoard().getField()[randomSpider.location]
+        for (int i = 0; i < board.getField()[randomSpider.location].getConnection().length; i++) {
+            if(board.getField()[randomSpider.location]
                     .getConnection()[i] == null) unavailableFields++;
         }
         int availableFields = 6 - unavailableFields;
         int randomConnection = random.nextInt(availableFields);
-        int randomField = board.getBoard().getField()[randomSpider.location]
+        int randomField = board.getField()[randomSpider.location]
                 .getConnection()[randomConnection].getNumber();
 
         if (isGameRunning) {
@@ -119,21 +122,21 @@ public class GameServiceImpl implements GameService {
     public boolean isMoveValid(int from, int to) {
         boolean correctPiece = false;
         if(isFlysTurn) {
-            if (from == board.getBoard().getFly().location) {
+            if (from == board.getFly().location) {
                 correctPiece = true;
             } else return false;
         } else {
-            for (int i = 0; i < board.getBoard().getSpider().length; i++) {
-                if (from == board.getBoard().getSpider()[i].location) correctPiece = true;
+            for (int i = 0; i < board.getSpider().length; i++) {
+                if (from == board.getSpider()[i].location) correctPiece = true;
             }
         }
 
         boolean areFieldsConnected = false;
-        boolean isFromFieldEmpty = board.getBoard().getField()[from].getPiece() == Pieces.EMPTY;
-        boolean isToFieldEmpty = board.getBoard().getField()[to].getPiece() == Pieces.EMPTY;
+        boolean isFromFieldEmpty = board.getField()[from].getPiece() == Pieces.EMPTY;
+        boolean isToFieldEmpty = board.getField()[to].getPiece() == Pieces.EMPTY;
 
-        for (int i = 0; i < board.getBoard().getField()[from].getConnection().length; i++) {
-            if (board.getBoard().getField()[from].getConnection()[i] == board.getBoard().getField()[to]) {
+        for (int i = 0; i < board.getField()[from].getConnection().length; i++) {
+            if (board.getField()[from].getConnection()[i] == board.getField()[to]) {
                 areFieldsConnected = true;
             }
         }
@@ -143,10 +146,10 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public int[] getPositions() {
-        int[] loc = new int[board.getBoard().getSpider().length + 1];
-        loc[0] = board.getBoard().getFly().location;
-        for (int i = 1; i < board.getBoard().getSpider().length + 1; i++) {
-            loc[i] = board.getBoard().getSpider()[i-1].location;
+        int[] loc = new int[board.getSpider().length + 1];
+        loc[0] = board.getFly().location;
+        for (int i = 1; i < board.getSpider().length + 1; i++) {
+            loc[i] = board.getSpider()[i-1].location;
         }
 
         return loc;
@@ -160,16 +163,16 @@ public class GameServiceImpl implements GameService {
     @Override
     public HashMap<Integer, ArrayList<Integer>> getConnections() {
         HashMap<Integer, ArrayList<Integer>> connections = new HashMap<>();
-        for (int i = 0; i < board.getBoard().getField().length; i++) {
+        for (int i = 0; i < board.getField().length; i++) {
             int numberOfConnections = 6;
             for (int j = 0; j < 6; j++) {
-                if (board.getBoard().getField()[i].getConnection()[j] == null) numberOfConnections--;
+                if (board.getField()[i].getConnection()[j] == null) numberOfConnections--;
             }
 
             ArrayList<Integer> connectionOfField = new ArrayList<>();
 
             for (int j = 0; j < numberOfConnections; j++) {
-                connectionOfField.add(board.getBoard().getField()[i].getConnection()[j].getNumber());
+                connectionOfField.add(board.getField()[i].getConnection()[j].getNumber());
                 connections.put(i, connectionOfField);
             }
         }
@@ -187,10 +190,10 @@ public class GameServiceImpl implements GameService {
     @Override
     public void moveFly(int from, int to) {
         if (isMoveValid(from, to)) {
-            board.getBoard().getField()[to].setPiece(board.getBoard().getField()[from].getPiece());
-            board.getBoard().getField()[from].setPiece(Pieces.EMPTY);
+            board.getField()[to].setPiece(board.getField()[from].getPiece());
+            board.getField()[from].setPiece(Pieces.EMPTY);
 
-            board.getBoard().getFly().location = to;
+            board.getFly().location = to;
             isFlysTurn = !isFlysTurn;
         } else {
             System.out.println("Invalid");
@@ -201,8 +204,8 @@ public class GameServiceImpl implements GameService {
     @Override
     public void moveSpider(int from, int to, Piece p) {
         if (isMoveValid(from, to)) {
-            board.getBoard().getField()[to].setPiece(board.getBoard().getField()[from].getPiece());
-            board.getBoard().getField()[from].setPiece(Pieces.EMPTY);
+            board.getField()[to].setPiece(board.getField()[from].getPiece());
+            board.getField()[from].setPiece(Pieces.EMPTY);
 
             p.location = to;
             isFlysTurn = !isFlysTurn;
@@ -215,36 +218,36 @@ public class GameServiceImpl implements GameService {
     @Override
     public Piece whichPiece(int location) {
         Piece pieceToReturn = null;
-        for (Piece p: board.getBoard().getSpider()) {
+        for (Piece p: board.getSpider()) {
             if (p.location == location) pieceToReturn = p;
         }
-        if (board.getBoard().getFly().location == location) pieceToReturn = board.getBoard().getFly();
+        if (board.getFly().location == location) pieceToReturn = board.getFly();
 
         return pieceToReturn;
     }
 
     public boolean isGameRunning() {
         if (
-                board.getBoard().getFly().location == 0 ||
-                        board.getBoard().getFly().location == 5 ||
-                        board.getBoard().getFly().location == 10 ||
-                        board.getBoard().getFly().location == 14 ||
-                        board.getBoard().getFly().location == 18 ||
-                        board.getBoard().getFly().location == 22
+                board.getFly().location == 0 ||
+                        board.getFly().location == 5 ||
+                        board.getFly().location == 10 ||
+                        board.getFly().location == 14 ||
+                        board.getFly().location == 18 ||
+                        board.getFly().location == 22
         ) {
             isGameRunning = false;
             pieceWon = 1;
         }
 
         int unavailableFields = 0;
-        for (int i = 0; i < board.getBoard().getField()[board.getBoard().getFly().location].getConnection().length; i++) {
+        for (int i = 0; i < board.getField()[board.getFly().location].getConnection().length; i++) {
             if(
-                    board.getBoard().getField()[board.getBoard().getFly().location].getConnection()[i] == null ||
-                            board.getBoard().getField()[board.getBoard().getFly().location].getConnection()[i].getPiece() != Pieces.EMPTY
+                    board.getField()[board.getFly().location].getConnection()[i] == null ||
+                            board.getField()[board.getFly().location].getConnection()[i].getPiece() != Pieces.EMPTY
             ) unavailableFields++;
         }
 
-        if (unavailableFields >= board.getBoard().getField()[board.getBoard().getFly().location].getConnection().length) {
+        if (unavailableFields >= board.getField()[board.getFly().location].getConnection().length) {
             isGameRunning = false;
             pieceWon = 2;
         }
@@ -260,13 +263,13 @@ public class GameServiceImpl implements GameService {
     public void display() {
         int flyLoc = -1;
         int spiderArrayIndex = 0;
-        int[] spiderLoc = new int[board.getBoard().getSpider().length];
+        int[] spiderLoc = new int[board.getSpider().length];
 
-        for (int i = 0; i < board.getBoard().getField().length; i++) {
-            if(board.getBoard().getField()[i].getPiece() == Pieces.FLY) {
+        for (int i = 0; i < board.getField().length; i++) {
+            if(board.getField()[i].getPiece() == Pieces.FLY) {
                 System.out.print("F ");
                 flyLoc = i;
-            } else if(board.getBoard().getField()[i].getPiece() == Pieces.SPIDER) {
+            } else if(board.getField()[i].getPiece() == Pieces.SPIDER) {
                 System.out.print("S ");
                 spiderLoc[spiderArrayIndex] = i;
                 spiderArrayIndex++;
@@ -275,9 +278,9 @@ public class GameServiceImpl implements GameService {
             }
         }
         System.out.println("\nPiece objects' locations: ");
-        System.out.println("Fly location: " + board.getBoard().getFly().location);
-        for (int i = 0; i < board.getBoard().getSpider().length; i++) {
-            System.out.println("Spider[" + i + "] location: " + board.getBoard().getSpider()[i].location);
+        System.out.println("Fly location: " + board.getFly().location);
+        for (int i = 0; i < board.getSpider().length; i++) {
+            System.out.println("Spider[" + i + "] location: " + board.getSpider()[i].location);
         }
 
         System.out.println("\nBoard's locations: ");
@@ -293,7 +296,7 @@ public class GameServiceImpl implements GameService {
         switch (gameMode) {
             case "pvp": {
                 this.gameMode = PVP;
-                board.newBoard();
+                this.board = new Board();
                 isGameRunning = true;
                 pieceWon = 0;
                 isFlysTurn = true;
@@ -303,7 +306,7 @@ public class GameServiceImpl implements GameService {
             }
             case "pvs": {
                 this.gameMode = PVS;
-                board.newBoard();
+                this.board = new Board();
                 isGameRunning = true;
                 pieceWon = 0;
                 isFlysTurn = true;
@@ -313,7 +316,7 @@ public class GameServiceImpl implements GameService {
             }
             case "pvf": {
                 this.gameMode = PVF;
-                board.newBoard();
+                this.board = new Board();
                 isGameRunning = true;
                 pieceWon = 0;
                 isFlysTurn = false;
