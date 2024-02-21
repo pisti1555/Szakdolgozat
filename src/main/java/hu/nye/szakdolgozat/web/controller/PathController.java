@@ -1,9 +1,7 @@
 package hu.nye.szakdolgozat.web.controller;
 
-import hu.nye.szakdolgozat.data.model.User;
-import hu.nye.szakdolgozat.service.GameService;
-import hu.nye.szakdolgozat.service.UserService;
-import jakarta.servlet.http.HttpSession;
+import hu.nye.szakdolgozat.data.model.user.PasswordEditForm;
+import hu.nye.szakdolgozat.data.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class PathController {
     private final Session session;
-
-
     @Autowired
     public PathController(Session session) {
         this.session = session;
@@ -38,29 +34,28 @@ public class PathController {
         model.addAttribute("users", session.userService.showAll());
         model.addAttribute("isLoggedIn", session.userService.exists(session.getUser().getUsername()));
         model.addAttribute("client", session.getUser());
-        return "yourProfile";
+        return "profile/clientProfile";
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/profile/{username}")
     public String profile(Model model, @PathVariable String username) {
         model.addAttribute("client", session.getUser());
         model.addAttribute("user", session.userService.getUser(username));
-        return "othersProfile";
+        return "profile/userProfile";
     }
 
     @GetMapping("/register")
     public String register(Model model) {
         model.addAttribute("client", session.getUser());
-        return "register";
+        return "account/register";
     }
 
     @PostMapping("/register")
     public String register(Model model, User newUser) {
         model.addAttribute("client", session.getUser());
-
         if (session.userService.exists(newUser.getUsername())) {
             model.addAttribute("exists", true);
-            return "register";
+            return "account/register";
         } else {
             session.userService.save(newUser);
             model.addAttribute("exists", false);
@@ -72,22 +67,53 @@ public class PathController {
     public String login(Model model) {
         model.addAttribute("client", session.getUser());
         model.addAttribute("isLoggedIn", session.isLoggedIn());
-        return "login";
+        return "account/login";
     }
 
     @PostMapping("/login")
     public String login(Model model, User user) {
         model.addAttribute("client", session.getUser());
         model.addAttribute("isLoggedIn", session.isLoggedIn());
-
         if (session.userService.login(user) != null) {
             session.setUser(session.userService.login(user));
             model.addAttribute("success", true);
+            model.addAttribute("client", session.getUser());
             return "index";
         } else {
             model.addAttribute("success", false);
-            return "login";
+            return "account/login";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(Model model) {
+        session.setUser(new User("GUEST-" + session.session.getId(), "Guest", "Guest", "Guest"));
+        model.addAttribute("client", session.getUser());
+        return "account/logout";
+    }
+
+    @GetMapping("/profile/edit")
+    public String editProfile(Model model) {
+        model.addAttribute("client", session.getUser());
+        return "edit/editProfile";
+    }
+
+    @GetMapping("/profile/edit/edit-password")
+    public String getEditPassword(Model model) {
+        model.addAttribute("client", session.getUser());
+        return "edit/editPassword";
+    }
+
+    @PostMapping("/profile/edit/edit-password")
+    public String editPassword(Model model, PasswordEditForm passwordEditForm) {
+        model.addAttribute("client", session.getUser());
+        User newUser = session.userService.edit(passwordEditForm, session.getUser());
+        if (newUser != null) {
+            session.setUser(newUser);
+            model.addAttribute("client", session.getUser());
+        }
+        System.out.println(newUser);
+        return "edit/editProfile";
     }
 
     @GetMapping("/scoreboard")

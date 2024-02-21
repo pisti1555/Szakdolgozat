@@ -6,10 +6,11 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Login</title>
+    <title>Create an account</title>
 
     <link rel="stylesheet" th:href="@{/css/navbar.css}"/>
-    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" th:href="@{/css/userInput.css}">
+    <link rel="stylesheet" th:href="@{/css/register.css}"/>
 
     <style th:inline="text">
         body {
@@ -46,43 +47,56 @@
         </div>
     </header>
 
-    <div class="alreadyLoggedIn" th:if="${isLoggedIn == true}">
-        <h2>You are already logged in</h2>
-    </div>
+    <div class="container">
+        <h1 class="title">Create a new account</h1>
 
-    <div class="container" th:unless="${isLoggedIn == true}">
-        <h1 class="title">Log in to your account</h1>
-
-        <form th:action="@{/login}" method="post">
+        <form onsubmit="return validatePassword()" th:action="@{/register}" method="post">
             <div class="inputContainer">
 
-                <h3 th:if="${success == false}">Incorrect username or password</h3>
+                <h3 th:if="${exists == true}">Username is already taken</h3>
 
                 <div class="row">
                     <label for="username"> Username: </label>
                     <input th:name="username" type="text" id="username" class="input" required>
                 </div>
                 <div class="row">
-                    <label for="password"> Password: </label>
-                    <input th:name="password" type="password" id="password" class="input" required>
+                    <label for="firstName"> First name: </label>
+                    <input th:name="firstName" type="text" id="firstName" class="input" required>
+                </div>
+                <div class="row">
+                    <label for="lastName"> Last name: </label>
+                    <input th:name="lastName" type="text" id="lastName" class="input" required>
+                </div>
+                <div class="row">
+                    <label for="password1"> Password: </label>
+                    <input type="password" id="password1" class="input" required>
+                </div>
+                <div class="row">
+                    <label for="password2"> Password again: </label>
+                    <input th:name="password" type="password" id="password2" class="input" required>
                 </div>
             </div>
-            
+        
             <div class="buttonContainer">
                 <div class="row">
                     <a class="button" th:href="@{/}">Home</a>
-                    <button class="button" type="submit">Log in</button>
-                </div>
-            </div>
-
-            <div class="register">
-                <div class="row">
-                    <p>
-                        or if you dont't have an account <a th:href="@{/register}">Register here </a>
-                    </p>
+                    <button class="button" type="submit">Register</button>
                 </div>
             </div>
         </form>
     </div>
+
+    <script>
+        function validatePassword() {
+        var pw1 = document.querySelector("#password1").value;
+        var pw2 = document.querySelector("#password2").value;
+
+        if (pw1 !== pw2) {
+            alert("Passwords don't match!");
+            return false;
+        }
+        return true;
+        }
+    </script>
 </body>
 </html>

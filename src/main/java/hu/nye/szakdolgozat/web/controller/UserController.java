@@ -1,6 +1,6 @@
 package hu.nye.szakdolgozat.web.controller;
 
-import hu.nye.szakdolgozat.data.model.User;
+import hu.nye.szakdolgozat.data.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +25,12 @@ public class UserController {
         return session.userService.login(user);
     }
 
+    /*
     @PutMapping("/edit")
     public User edit(@RequestBody User user) {
-        return session.userService.edit(user);
+        return session.userService.edit(session.getUser(), "todo");
     }
+     */
 
     @GetMapping("/showAll")
     public List<User> showAll() {

@@ -1,4 +1,4 @@
-package hu.nye.szakdolgozat.data.model;
+package hu.nye.szakdolgozat.data.model.user;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

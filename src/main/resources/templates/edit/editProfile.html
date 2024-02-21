@@ -51,8 +51,11 @@
 
         <div class="userdata">
             <div class="row">
-                <h3 th:text="'Username: ' + ${client.username}">
-                </h3>
+                <h3 th:text="'Username: ' + ${client.username}"></h3>
+            </div>
+            <div class="row">
+                <h3 th:text="'Password: ' + ${client.password}"></h3>
+                <a class="button" th:href="@{/profile/edit/edit-password}">Edit password</a>
             </div>
             <div class="row">
                 <h3 th:text="'Games played: ' + ${client.playedGames}"></h3>
@@ -67,10 +70,8 @@
         
         <div class="buttonContainer">
             <div class="row">
-                <a class="button" th:href="@{/}">Home</a>
-                <a class="button" th:if="${isLoggedIn == true}" th:href="@{/logout}">Log out</a>
-                <a class="button" th:unless="${isLoggedIn == true}" th:href="@{/login}">Log in</a>
-                <a class="button" th:if="${isLoggedIn == true}" th:href="@{/edit}">Edit profile</a>
+                <a class="button" th:href="@{/}">return Home</a>
+                
             </div>
         </div>
     </div>

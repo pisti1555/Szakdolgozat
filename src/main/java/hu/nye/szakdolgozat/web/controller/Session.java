@@ -1,17 +1,16 @@
 package hu.nye.szakdolgozat.web.controller;
 
-import hu.nye.szakdolgozat.data.model.User;
+import hu.nye.szakdolgozat.data.model.user.User;
 import hu.nye.szakdolgozat.service.GameService;
 import hu.nye.szakdolgozat.service.GameServiceImpl;
 import hu.nye.szakdolgozat.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Session {
-    private final HttpSession session;
+    protected final HttpSession session;
     protected UserService userService;
     private GameService gameService;
 

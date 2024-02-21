@@ -6,10 +6,10 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Scoreboard</title>
+    <title>Profile</title>
 
     <link rel="stylesheet" th:href="@{/css/navbar.css}"/>
-    <link rel="stylesheet" th:href="@{/css/scoreboard.css}"/>
+    <link rel="stylesheet" th:href="@{/css/logout.css}"/>
 
     <style th:inline="text">
         body {
@@ -47,29 +47,14 @@
     </header>
 
     <div class="container">
-        <h2 class="title">Scoreboard</h2>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Games played</th>
-                    <th>Steps made</th>
-                    <th>Games won</th>                
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="user : ${users}">
-                    <td>
-                        <a th:href="@{'/profile/' + ${user.username}}" th:text="${user.username}"></a>
-                    </td>
-                    <td th:text="${user.playedGames}"></td>
-                    <td th:text="${user.stepsMade}"></td>
-                    <td th:text="${user.wonGames}"></td>
-                </tr>
-            </tbody>
-        </table>
-        
+        <form th:action="@{/logout}" method="get">
+            <div class="row">
+                <h2>You have successfully logged out!</h2>
+            </div>
+            <div class="row">
+                <a class="button" th:href="@{/}">click here to return Home</a>
+            </div>
+        </form>  
     </div>
 </body>
 </html>

@@ -1,12 +1,12 @@
 package hu.nye.szakdolgozat.service;
 
-import hu.nye.szakdolgozat.data.model.User;
+import hu.nye.szakdolgozat.data.model.user.PasswordEditForm;
+import hu.nye.szakdolgozat.data.model.user.User;
 import hu.nye.szakdolgozat.data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -79,15 +79,20 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Updates the given user in database by deleting it and inserting the new with updated data
-     * @param newUser : User object with the updated values
      * @return saved User if the update was successful
      */
     @Override
-    public User edit(User newUser) {
-        if (exists(newUser.getUsername())) {
-            userRepository.delete(userRepository.findById(newUser.getUsername()).orElseThrow());
-            return userRepository.save(newUser);
-        } else return new User();
+    public User edit(PasswordEditForm passwordEditForm, User user) {
+        if (passwordEditForm.getPassword1().equals(passwordEditForm.getPassword2())) {
+            if (userRepository.findById(user.getUsername()).isPresent()) {
+                User userInDB = userRepository.findById(user.getUsername()).get();
+                if (passwordEditForm.getOldPassword().equals(userInDB.getPassword())) {
+                    userInDB.setPassword(passwordEditForm.getPassword1());
+                    delete(user.getUsername());
+                    return save(userInDB);
+                } else return null;
+            } else return null;
+        } else return null;
     }
 
     /**
