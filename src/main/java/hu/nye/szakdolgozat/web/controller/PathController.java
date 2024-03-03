@@ -109,10 +109,13 @@ public class PathController {
         model.addAttribute("client", session.getUser());
         User newUser = session.userService.edit(passwordEditForm, session.getUser());
         if (newUser != null) {
-            session.setUser(newUser);
-            model.addAttribute("client", session.getUser());
+            if (session.getUser().getPassword().equals(passwordEditForm.getOldPassword())) {
+                session.setUser(newUser);
+                model.addAttribute("client", session.getUser());
+                return "edit/editPassword";
+            }
+
         }
-        System.out.println(newUser);
         return "edit/editProfile";
     }
 

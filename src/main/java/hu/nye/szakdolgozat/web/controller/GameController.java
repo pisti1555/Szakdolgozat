@@ -1,5 +1,6 @@
 package hu.nye.szakdolgozat.web.controller;
 
+import hu.nye.szakdolgozat.data.model.user.User;
 import hu.nye.szakdolgozat.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ public class GameController {
         GameService service = session.getGameService();
         if (service.isMoveValid(from, to)) {
             service.move(from, to);
+            session.stepsDone++;
         } else {
             System.out.println("Invalid move");
         }
@@ -34,9 +36,19 @@ public class GameController {
         GameService service = session.getGameService();
         if (service.isMoveValid(from, to)) {
             service.move(from, to);
+            session.stepsDone++;
             service.randomMoveSpider();
         } else {
             System.out.println("Invalid move");
+        }
+
+        if (service.whoWon() == 1) {
+            session.gamesPlayed++;
+            session.gamesWon++;
+            updateDB();
+        } else if (service.whoWon() == 2) {
+            session.gamesPlayed++;
+            updateDB();
         }
 
         return service.whoWon();
@@ -47,9 +59,19 @@ public class GameController {
         GameService service = session.getGameService();
         if (service.isMoveValid(from, to)) {
             service.move(from, to);
+            session.stepsDone++;
             service.randomMoveFly();
         } else {
             System.out.println("Invalid move");
+        }
+
+        if (service.whoWon() == 2) {
+            session.gamesPlayed++;
+            session.gamesWon++;
+            updateDB();
+        } else if (service.whoWon() == 1) {
+            session.gamesPlayed++;
+            updateDB();
         }
 
         return service.whoWon();
@@ -102,5 +124,23 @@ public class GameController {
     public int getSpiderStepsDone() {
         GameService service = session.getGameService();
         return service.getSpiderStepsDone();
+    }
+
+    @PostMapping("/updateDB")
+    public User updateDB() {
+        User user = session.getUser();
+        int wonGames = session.getUser().getWonGames();
+        int gamesPlayed = session.getUser().getPlayedGames();
+        int stepsDone = session.getUser().getStepsMade();
+        user.setWonGames(wonGames + session.gamesWon);
+        user.setPlayedGames(gamesPlayed + session.gamesPlayed);
+        user.setStepsMade(stepsDone + session.stepsDone);
+        if (session.userService.exists(user.getUsername())) {
+            session.userService.delete(user.getUsername());
+            session.gamesPlayed = 0;
+            session.gamesWon = 0;
+            session.stepsDone = 0;
+            return session.userService.save(user);
+        } else return null;
     }
 }

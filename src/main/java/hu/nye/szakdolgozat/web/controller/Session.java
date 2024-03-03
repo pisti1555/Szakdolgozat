@@ -13,6 +13,9 @@ public class Session {
     protected final HttpSession session;
     protected UserService userService;
     private GameService gameService;
+    protected int gamesWon = 0;
+    protected int gamesPlayed = 0;
+    protected int stepsDone = 0;
 
     @Autowired
     public Session(HttpSession session, UserService userService) {
